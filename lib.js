@@ -5,6 +5,34 @@ var matrix = {};
 
 /* Our namespace function */
 (function (mt) {
+  // Matrix [[a, b], [c, d]]
+
+  mt.Matrix = function (a, b, c, d) {
+    this.a = a
+    this.b = b
+    this.c = c
+    this.d = d
+  }
+
+  mt.Matrix.prototype.getDeterminant = function () {
+    return this.a * this.d - this.b * this.c
+  }
+
+  mt.Matrix.prototype.getInverse = function () {
+    // TODO
+  }
+
+  mt.Point = function (x, y) {
+    this.x = x
+    this.y = y
+  }
+
+  mt.Point.prototype.applyMatrix = function (m) {
+    return new mt.Point(this.x * m.a + this.y * m.b, this.x * m.c + this.y * m.d)
+  }
+
+  // Grid
+
   /* @param{rect} rectangle { x, y, width, height } bounding the grid.
    * @param{numTicks} number of ticks on each axis. Defaults to 10.
    * @param{tickSpacing} { x, y } spacing of ticks in the x, y direction. Defaults
@@ -45,9 +73,26 @@ var matrix = {};
     }
   }
 
-  mt.Grid.prototype.gridToScreenCoords = function (x, y) {
-    return { x: x * this.tickSpacing.x + this.center.x,
-             y: -y * this.tickSpacing.y + this.center.y }
+  mt.Grid.prototype.gridToScreenCoords = function (point) {
+    return new mt.Point(point.x * this.tickSpacing.x + this.center.x,
+                        point.y * this.tickSpacing.y + this.center.y)
+  }
+
+  mt.Grid.prototype.scalePoints = function (arrayOfPoints) {
+    var scaled = []
+
+    for (var i = 0; i < arrayOfPoints.length; i++) {
+      scaled.push(this.gridToScreenCoords(arrayOfPoints[i]))
+    }
+
+    return scaled
+  }
+
+  mt.drawTriangle = function (two, vertices, color) {
+    var triangle = two.makePath(vertices[0].x, vertices[0].y,
+      vertices[1].x, vertices[1].y, vertices[2].x, vertices[2].y, true)
+
+    triangle.fill = color
   }
 
   mt.runApp = function (canvasElem) {
@@ -55,17 +100,27 @@ var matrix = {};
 
     // Bounding rectangle for the grid
     var rect = { x: 40, y: 40, width: two.width - 40 * 2, height: two.height - 40 * 2 }
+
+    // Create and draw the grid
     var grid = new mt.Grid(rect)
     grid.draw(two)
 
-    var vertices = [grid.gridToScreenCoords(0, 0), grid.gridToScreenCoords(1, 0), grid.gridToScreenCoords(1, 1)]
-    var triangle = two.makePath(vertices[0].x, vertices[0].y,
-      vertices[1].x, vertices[1].y, vertices[2].x, vertices[2].y, true)
-    triangle.stroke = 'orangered'
-    triangle.fill = 'red'
-    triangle.linewidth = 0
+    // Draw an untransformed triangle
+    var vertices = [new mt.Point(0, 0), new mt.Point(1, 0), new mt.Point(1, -1)]
+    var scaledVertices = grid.scalePoints(vertices)
+    mt.drawTriangle(two, scaledVertices, 'red')
 
-    console.log(vertices)
+    var matrix = new mt.Matrix(-2, 0, 0, -2)
+
+    // Apply transformation matrix to each vertex
+    for (var i = 1; i < vertices.length; i++) {
+      vertices[i] = vertices[i].applyMatrix(matrix)
+    }
+
+    scaledVertices = grid.scalePoints(vertices)
+
+    // Draw the transformed triangle
+    mt.drawTriangle(two, scaledVertices, 'green')
 
     two.update()
   }
