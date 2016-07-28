@@ -1,0 +1,13 @@
+{
+    "extends": "standard",
+    "installedESLint": true,
+    "plugins": [
+        "standard",
+        "promise"
+    ],
+    "globals": {
+      "$": true,
+      "Two": true,
+      "matrix": true
+    }
+}
