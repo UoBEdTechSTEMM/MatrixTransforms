@@ -81,10 +81,10 @@ If you want to declare a namespace-local "private" variable or function, then de
 ```javascript
 ...
 (function (mt) {
-  var namespaceLocal = 5;
+  var namespaceLocal = 5
   ...
   mt.addOne = function () {
-    return namespaceLocal + 1;
+    return namespaceLocal + 1
   }
   ...
 })(matrix)
