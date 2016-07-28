@@ -10,18 +10,26 @@ Two.JS Visualisation for Matrix Transformations
 Contribution guide:
 -------------------
 
-[Install node.js](https://nodejs.org/en/) TODO: need a way to install this on uni computers ([cloud9ide?](https://c9.io/))
+[Install node.js](https://nodejs.org/en/)
 
-To lint your code using Standard.JS and check that it conforms to the style guide you can use the "standard" node module. If you have node installed you can set up standard by running the command:
+If you are using a computer where you do not have administrator access, create an account on [Cloud 9 IDE](https://c9.io/) which will give you access to a virtual machine with node.js and javascript editor that will run in the browser. You can then make a new workspace directly from a github repository where you can run `npm` and `standard`.
+
+To lint your code using Standard.JS and check that it conforms to the style guide you can use the "standard" node module. If you have node installed and are in the project directory you can set up standard by running the command:
 
 ```bash
-$ npm install -g standard
+$ npm install
 ```
 
 After that you can run the command ```standard``` in the root directory of the project and it will alert you to javascript formatting errors in any of the source files. You can *automagically* fix any errors by running.
 
 ```bash
 $ standard --fix
+```
+
+If you get an error about `standard` not existing try this first:
+
+```bash
+$ npm install -g standard
 ```
 
 If you enter in a new function, add it to the ```mt``` namespace e.g. if you want to add the ```clamp``` function to the ```mt``` namespace write something like this:
