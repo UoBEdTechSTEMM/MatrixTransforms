@@ -8,6 +8,19 @@ Two.JS Visualisation for Matrix Transformations
 [View on rawgit](https://rawgit.com/UoBEdTechSTEMM/MatrixTransforms/master/index.html)
 
 Contribution guide:
+-------------------
+
+To lint your code using Standard.JS and check that it conforms to the style guide you can use the "standard" node module. If you have node installed you can set up standard by running the command:
+
+```bash
+$ npm install -g standard
+```
+
+After that you can run the command ```standard``` in the root directory of the project and it will alert you to javascript formatting errors in any of the source files. You can *automatically* fix any errors by running.
+
+```bash
+$ standard --fix
+```
 
 If you enter in a new function, add it to the ```mt``` namespace e.g. if you want to add the ```clamp``` function to the ```mt``` namespace write something like this:
 
