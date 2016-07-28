@@ -22,6 +22,10 @@ var matrix = {};
     // TODO
   }
 
+  mt.Matrix.prototype.toString = function () {
+    return '[[' + this.a + ', ' + this.b + '], [' + this.c + ', ' + this.d + ']]'
+  }
+
   mt.Point = function (x, y) {
     this.x = x
     this.y = y
@@ -29,6 +33,10 @@ var matrix = {};
 
   mt.Point.prototype.applyMatrix = function (m) {
     return new mt.Point(this.x * m.a + this.y * m.b, this.x * m.c + this.y * m.d)
+  }
+
+  mt.Point.prototype.toString = function () {
+    return '[' + this.a + ', ' + this.b + ']'
   }
 
   // Grid
@@ -121,6 +129,9 @@ var matrix = {};
 
     // Draw the transformed triangle
     mt.drawTriangle(two, scaledVertices, 'green')
+
+    // Display the matrix on the page
+    $('#matrixDisplay').text(matrix.toString())
 
     two.update()
   }

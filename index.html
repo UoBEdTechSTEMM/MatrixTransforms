@@ -3,11 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Matrix Transformations</title>
-  <style>
-    body {
-      font-family: sans-serif;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
@@ -16,7 +12,10 @@
   <!-- For drawing 2D graphics -->
   <script src="node_modules/two.js/build/two.js"></script>
 
-  <div id="canvasContainer"></div>
+  <h2>Matrix Transformations</h2>
+  <p>Currently the matrix is <span id="matrixDisplay" class="preformatted"></span></p>
+
+  <div id="canvasContainer" class="center"></div>
 
   <script src="lib.js"></script>
   <script src="app.js"></script>
