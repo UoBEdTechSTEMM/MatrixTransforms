@@ -16,7 +16,7 @@ To lint your code using Standard.JS and check that it conforms to the style guid
 $ npm install -g standard
 ```
 
-After that you can run the command ```standard``` in the root directory of the project and it will alert you to javascript formatting errors in any of the source files. You can *automatically* fix any errors by running.
+After that you can run the command ```standard``` in the root directory of the project and it will alert you to javascript formatting errors in any of the source files. You can *automagically* fix any errors by running.
 
 ```bash
 $ standard --fix
@@ -27,18 +27,18 @@ If you enter in a new function, add it to the ```mt``` namespace e.g. if you wan
 ```javascript
 var matrix = {};
 
-(function(mt) {
+(function (mt) {
 ...
 
-mt.clamp = function (x, min, max) {
-  if (x <= min) {
-    return min
-  } else if (x > min && x < max) {
-    return x
-  } else if (x >= max) {
-    return max
+  mt.clamp = function (x, min, max) {
+    if (x <= min) {
+      return min
+    } else if (x > min && x < max) {
+      return x
+    } else if (x >= max) {
+      return max
+    }
   }
-}
 
 ...
 })(matrix)
@@ -47,11 +47,12 @@ mt.clamp = function (x, min, max) {
 You can then call this from inside the namespace like this:
 
 ```javascript
-(function(mt) {
 ...
-mt.somefunc = function  () {
-  var y = mt.clamp(15, 10, 20)
-}
+(function (mt) {
+...
+  mt.somefunc = function  () {
+    var y = mt.clamp(15, 10, 20)
+  }
 ...
 })(matrix)
 ```
@@ -60,4 +61,42 @@ and from other scripts like this:
 
 ```javascript
 var y = matrix.clamp(15, 10, 20)
+```
+
+If you want to declare a namespace-local "private" variable or function, then declare it as normal but within the namespace:
+
+```javascript
+...
+(function (mt) {
+  var namespaceLocal = 5;
+  ...
+  mt.addOne = function () {
+    return namespaceLocal + 1;
+  }
+  ...
+})(matrix)
+
+console.log(namespaceLocal === undefined); // true
+```
+
+Create objects as normal:
+
+```javascript
+...
+(function (mt) {
+  ...
+  mt.Vector3 = function (x, y, z) {
+    this.x = x
+    this.y = y
+    this.z = z
+  }
+
+  mt.Vector3.prototype.getLength = function () {
+    return Math.sqrt(Math.pow(this.x, 2), Math.pow(this.y, 2), Math.pow(this.z, 2))
+  }
+  ...
+})(matrix)
+
+var vector = new matrix.Vector3(3, 4, 5)
+console.log(vector.getLength()) // 7.07...
 ```
