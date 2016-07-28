@@ -1,4 +1,6 @@
 
+// Get the canvas element
 var elem = $('#canvasContainer')[0]
 
-matrix.run(elem)
+// Run the app
+matrix.runApp(elem)

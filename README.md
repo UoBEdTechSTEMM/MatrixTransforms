@@ -1,7 +1,9 @@
 Matrix Transformations
 ======================
 
-Two.JS Visualisation for Matrix Transformations
+Two.JS Visualisation for Matrix Transformations.
+
+`lib.js` contains the main code of our program. `app.js` calls the `matrix.run` function with the canvas element we want to draw to.
 
 [View on rawgit](https://rawgit.com/UoBEdTechSTEMM/MatrixTransforms/master/index.html)
 

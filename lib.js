@@ -1,9 +1,11 @@
 /* http://jonobr1.github.io/two.js/ */
 
+/* Library namespace */
 var matrix = {};
 
+/* Our namespace function */
 (function (mt) {
-  mt.run = function (canvasElem) {
+  mt.runApp = function (canvasElem) {
     var two = new Two({ width: 500, height: 500 }).appendTo(canvasElem)
 
     var rect = two.makeRectangle(100, 200, 40, 60)
