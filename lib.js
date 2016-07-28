@@ -86,6 +86,7 @@ var matrix = {};
                         point.y * this.tickSpacing.y + this.center.y)
   }
 
+  /* Transform array of points from grid to screen coordinates */
   mt.Grid.prototype.scalePoints = function (arrayOfPoints) {
     var scaled = []
 
@@ -109,30 +110,47 @@ var matrix = {};
     // Bounding rectangle for the grid
     var rect = { x: 40, y: 40, width: two.width - 40 * 2, height: two.height - 40 * 2 }
 
-    // Create and draw the grid
+    // Create the grid
     var grid = new mt.Grid(rect)
-    grid.draw(two)
+    var vertices
+    var scaledVertices
 
-    // Draw an untransformed triangle
-    var vertices = [new mt.Point(0, 0), new mt.Point(1, 0), new mt.Point(1, -1)]
-    var scaledVertices = grid.scalePoints(vertices)
-    mt.drawTriangle(two, scaledVertices, 'red')
+    function drawGridAndUntransformedTriangle () {
+      // Draw the grid
+      grid.draw(two)
 
-    var matrix = new mt.Matrix(-2, 0, 0, -2)
-
-    // Apply transformation matrix to each vertex
-    for (var i = 1; i < vertices.length; i++) {
-      vertices[i] = vertices[i].applyMatrix(matrix)
+      // Draw an untransformed triangle
+      vertices = [new mt.Point(0, 0), new mt.Point(1, 0), new mt.Point(1, -1)]
+      scaledVertices = grid.scalePoints(vertices)
+      mt.drawTriangle(two, scaledVertices, 'red')
     }
 
-    scaledVertices = grid.scalePoints(vertices)
+    $('#renderMatrix').click(function () {
+      // Clear the screen and redraw initial stuff
+      two.clear()
+      drawGridAndUntransformedTriangle()
 
-    // Draw the transformed triangle
-    mt.drawTriangle(two, scaledVertices, 'green')
+      // Get the matrix elements from page
+      var matrix = new mt.Matrix($('#matrixElemA').val(), $('#matrixElemB').val(),
+        $('#matrixElemC').val(), $('#matrixElemD').val())
 
-    // Display the matrix on the page
-    $('#matrixDisplay').text(matrix.toString())
+      var newVertices = [new mt.Point(0, 0)]
 
+      // Apply transformation matrix to each vertex
+      for (var i = 1; i < vertices.length; i++) {
+        newVertices.push(vertices[i].applyMatrix(matrix))
+      }
+
+      // Transform to screen coordinates
+      scaledVertices = grid.scalePoints(newVertices)
+
+        // Draw the transformed triangle
+      mt.drawTriangle(two, scaledVertices, 'green')
+
+      two.update()
+    })
+
+    drawGridAndUntransformedTriangle()
     two.update()
   }
 })(matrix)
