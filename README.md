@@ -10,6 +10,8 @@ Two.JS Visualisation for Matrix Transformations
 Contribution guide:
 -------------------
 
+[Install node.js](https://nodejs.org/en/) TODO: need a way to install this on uni computers ([cloud9ide?](https://c9.io/))
+
 To lint your code using Standard.JS and check that it conforms to the style guide you can use the "standard" node module. If you have node installed you can set up standard by running the command:
 
 ```bash
