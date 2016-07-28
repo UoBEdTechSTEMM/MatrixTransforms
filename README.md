@@ -3,12 +3,14 @@ Matrix Transformations
 
 Two.JS Visualisation for Matrix Transformations
 
-[STYLE GUIDE read before making a commit](https://github.com/feross/standard)
-
 [View on rawgit](https://rawgit.com/UoBEdTechSTEMM/MatrixTransforms/master/index.html)
 
 Contribution guide:
 -------------------
+
+[STYLE GUIDE read before making a commit](https://github.com/feross/standard)
+
+[Some interactive tutorials](http://nodeschool.io/#workshoppers)
 
 [Install node.js](https://nodejs.org/en/)
 
@@ -31,6 +33,9 @@ If you get an error about `standard` not existing try this first:
 ```bash
 $ npm install -g standard
 ```
+
+Programming guide:
+------------------
 
 If you enter in a new function, add it to the ```mt``` namespace e.g. if you want to add the ```clamp``` function to the ```mt``` namespace write something like this:
 
