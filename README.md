@@ -30,8 +30,7 @@ If you enter in a new function, add it to the ```mt``` namespace e.g. if you wan
 var matrix = {};
 
 (function (mt) {
-...
-
+  ...
   mt.clamp = function (x, min, max) {
     if (x <= min) {
       return min
@@ -41,8 +40,7 @@ var matrix = {};
       return max
     }
   }
-
-...
+  ...
 })(matrix)
 ```
 
@@ -51,11 +49,11 @@ You can then call this from inside the namespace like this:
 ```javascript
 ...
 (function (mt) {
-...
+  ...
   mt.somefunc = function  () {
     var y = mt.clamp(15, 10, 20)
   }
-...
+  ...
 })(matrix)
 ```
 
