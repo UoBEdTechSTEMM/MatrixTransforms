@@ -23,8 +23,24 @@ Then you can run `standard` to lint your code and highlight any style errors.
 
 * Display the transformation matrix and points in LaTeX (MathJax?)
 
-* ~~Add the inverse matrix~~
+  * ~~Display inverse matrix in LaTeX~~
+  * Display transformation matrix using [forminput](https://github.com/leathrum/mathjax-ext-contrib/tree/master/forminput)
+  * Display full transformation equation (M * vertex = transformed)
 
 * Have some preset matrices in a dropdown
 
+* Add new shapes
+
+* Animation of transformation process in elementary steps
+
+* Sequencing of transformations
+
+* Make it prettier :kiss:
+
 * Gamification
+
+* ~~Add the inverse matrix~~
+
+## Ideas
+
+* I don't know if the swap button is very useful
