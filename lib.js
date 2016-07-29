@@ -187,6 +187,11 @@ var matrix = {};
       matrix = new mt.Matrix($('#matrixElemA').val(), $('#matrixElemB').val(),
         $('#matrixElemC').val(), $('#matrixElemD').val())
 
+      // Check if there are any bad values, if so, break
+      if (isNaN(matrix.a) || isNaN(matrix.b) || isNaN(matrix.c) || isNaN(matrix.d)) {
+        return
+      }
+
       transformedVertices = []
 
       // Apply transformation matrix to each vertex
