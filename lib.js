@@ -19,7 +19,8 @@ var matrix = {};
   }
 
   mt.Matrix.prototype.getInverse = function () {
-    // TODO
+    var det = this.getDeterminant()
+    return new mt.Matrix(this.d / det, -this.b / det, -this.c / det, this.a / det)
   }
 
   mt.Matrix.prototype.toString = function () {
@@ -150,6 +151,7 @@ var matrix = {};
       two.update()
     })
 
+    // Draw initial grid and triangle
     drawGridAndUntransformedTriangle()
     two.update()
   }
