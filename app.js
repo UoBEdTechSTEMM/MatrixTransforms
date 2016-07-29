@@ -2,7 +2,7 @@
 // Forminput extension for LaTeX Inputs
 MathJax.Hub.Config({
   TeX: {
-    extensions: ['http://cs.jsu.edu/mathjax-ext/contrib/forminput/forminput.js']
+    extensions: ['[Contrib]/forminput/forminput.js']
   }
 })
 
