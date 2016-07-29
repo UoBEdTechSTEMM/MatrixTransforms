@@ -116,10 +116,11 @@ var matrix = {};
     var two = new Two({ width: 500, height: 500 }).appendTo(canvasElem)
 
     // Bounding rectangle for the grid
-    var rect = { x: 40, y: 40, width: two.width - 40 * 2, height: two.height - 40 * 2 }
+    var pad = 20
+    var rect = { x: pad, y: pad, width: two.width - pad * 2, height: two.height - pad * 2 }
 
     // Create the grid
-    var grid = new mt.Grid(rect)
+    var grid = new mt.Grid(rect, 20)
     var vertices
     var scaledVertices
 
