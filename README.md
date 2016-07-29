@@ -23,6 +23,8 @@ Then you can run `standard` to lint your code and highlight any style errors.
 
 * Display the transformation matrix and points in LaTeX (MathJax?)
 
-* Add the inverse matrix
+* ~~Add the inverse matrix~~
+
+* Have some preset matrices in a dropdown
 
 * Gamification
