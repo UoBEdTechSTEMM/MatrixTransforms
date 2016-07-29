@@ -150,7 +150,7 @@ var matrix = {};
     var two = new Two({ width: 500, height: 500 }).appendTo(canvasElem)
 
     // Bounding rectangle for the grid
-    var pad = 20
+    var pad = 10
     var rect = { x: pad, y: pad, width: two.width - pad * 2, height: two.height - pad * 2 }
 
     // Create the grid
