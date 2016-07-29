@@ -4,13 +4,15 @@
   <meta charset="utf-8">
   <title>Matrix Transformations</title>
   <link rel="stylesheet" type="text/css" href="style.css">
+  <!-- TeX Rendering -->
+  <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 <body>
   <!-- For DOM manipulation -->
-  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
   <!-- For drawing 2D graphics -->
-  <script src="node_modules/two.js/build/two.js"></script>
+  <script type="text/javascript" src="node_modules/two.js/build/two.js"></script>
 
   <h2>Matrix Transformations</h2>
   <p>Currently the matrix is
@@ -28,18 +30,15 @@
   </p>
 
   <p>
-    <span class="preformatted">
-      [[<span id="invMatrixElemA" class="matrixOutput">0</span>,
-        <span id="invMatrixElemB" class="matrixOutput">0</span>], <br />
-       &nbsp;[<span id="invMatrixElemC" class="matrixOutput">0</span>,
-        <span id="invMatrixElemD" class="matrixOutput">0</span>]]
-    </span>
+    The inverse matrix is:
+    <div id="inverseMatrix">
+    </div>
   </p>
 
   <div id="canvasContainer" class="center"></div>
 
-  <script src="lib.js"></script>
-  <script src="app.js"></script>
+  <script type="text/javascript" src="lib.js"></script>
+  <script type="text/javascript" src="app.js"></script>
 </body>
 
 </html>

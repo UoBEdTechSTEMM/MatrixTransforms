@@ -8,6 +8,7 @@
     "globals": {
       "$": true,
       "Two": true,
-      "matrix": true
+      "matrix": true,
+      "MathJax": true
     }
 }

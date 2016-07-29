@@ -124,6 +124,10 @@ var matrix = {};
     var vertices
     var scaledVertices
 
+    // Store both matrices (for swapping them using the swap button)
+    var matrix
+    var inverseMatrix
+
     function drawGridAndUntransformedTriangle () {
       // Draw the grid
       grid.draw(two)
@@ -140,7 +144,7 @@ var matrix = {};
       drawGridAndUntransformedTriangle()
 
       // Get the matrix elements from page
-      var matrix = new mt.Matrix($('#matrixElemA').val(), $('#matrixElemB').val(),
+      matrix = new mt.Matrix($('#matrixElemA').val(), $('#matrixElemB').val(),
         $('#matrixElemC').val(), $('#matrixElemD').val())
 
       var newVertices = [new mt.Point(0, 0)]
@@ -160,16 +164,17 @@ var matrix = {};
       var res = matrix.getInverse()
 
       if (res.exists) {
-        $('#invMatrixElemA').text(res.matrix.a)
-        $('#invMatrixElemB').text(res.matrix.b)
-        $('#invMatrixElemC').text(res.matrix.c)
-        $('#invMatrixElemD').text(res.matrix.d)
+        inverseMatrix = res.matrix
+        $('#inverseMatrix').text('\\[ \\begin{pmatrix} ' +
+          res.matrix.a + ' & ' + res.matrix.b + ' \\\\ ' +
+          res.matrix.c + ' &  ' + res.matrix.d + ' \\end{pmatrix} \\]')
       } else {
-        $('#invMatrixElemA').text(0)
-        $('#invMatrixElemB').text(0)
-        $('#invMatrixElemC').text(0)
-        $('#invMatrixElemD').text(0)
+        inverseMatrix = new mt.Matrix(0, 0, 0, 0)
+        $('#inverseMatrix').val('\\[ \\begin{pmatrix} 0 & 0 \\ 0 & 0 \\end{pmatrix} \\]')
       }
+
+      // Re-render LaTeX
+      MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MathExample'])
 
       // Update screen
       two.update()
@@ -183,21 +188,14 @@ var matrix = {};
 
     // Button that swaps the inverse and transformation matrices
     $('#swapMatrices').click(function () {
-      var temp = $('#matrixElemA').val()
-      $('#matrixElemA').val($('#invMatrixElemA').text())
-      $('#invMatrixElemA').text(temp)
+      $('#matrixElemA').val(inverseMatrix.a)
+      $('#matrixElemB').val(inverseMatrix.b)
+      $('#matrixElemC').val(inverseMatrix.c)
+      $('#matrixElemD').val(inverseMatrix.d)
 
-      temp = $('#matrixElemB').val()
-      $('#matrixElemB').val($('#invMatrixElemB').text())
-      $('#invMatrixElemB').text(temp)
-
-      temp = $('#matrixElemC').val()
-      $('#matrixElemC').val($('#invMatrixElemC').text())
-      $('#invMatrixElemC').text(temp)
-
-      temp = $('#matrixElemD').val()
-      $('#matrixElemD').val($('#invMatrixElemD').text())
-      $('#invMatrixElemD').text(temp)
+      $('#inverseMatrix').text('\\[ \\begin{pmatrix} ' +
+        matrix.a + ' & ' + matrix.b + ' \\\\ ' +
+        matrix.c + ' &  ' + matrix.d + ' \\end{pmatrix} \\]')
 
       // Refresh everything
       updateDisplay()
