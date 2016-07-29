@@ -1,4 +1,5 @@
-/* http://jonobr1.github.io/two.js/ */
+/* TwoJS http://jonobr1.github.io/two.js/ */
+/* color palette http://paletton.com/#uid=32i0B0kmRuDdfKki--+sHsUtYm0 */
 
 /* Library namespace */
 var matrix = {};
@@ -144,7 +145,7 @@ var matrix = {};
 
     triangle.fill = fillColor
     triangle.stroke = strokeColor
-    triangle.linewidth = 1.5
+    triangle.linewidth = 2
     triangle.opacity = 0.5
   }
 
@@ -195,7 +196,7 @@ var matrix = {};
 
       // Transform to screen coordinates and draw the triangle
       scaledVertices = grid.scalePoints(transformedVertices)
-      mt.drawTriangle(two, scaledVertices, '#DAF791', '#B7E642')
+      mt.drawTriangle(two, scaledVertices, '#DAF791', '#A1D916')
 
       // Calculate and display the inverse
       res = matrix.getInverse()
