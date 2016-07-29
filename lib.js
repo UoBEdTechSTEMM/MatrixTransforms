@@ -83,7 +83,7 @@ var matrix = {};
 
   mt.Grid.prototype.gridToScreenCoords = function (point) {
     return new mt.Point(point.x * this.tickSpacing.x + this.center.x,
-                        point.y * this.tickSpacing.y + this.center.y)
+                       -point.y * this.tickSpacing.y + this.center.y)
   }
 
   /* Transform array of points from grid to screen coordinates */
@@ -120,7 +120,7 @@ var matrix = {};
       grid.draw(two)
 
       // Draw an untransformed triangle
-      vertices = [new mt.Point(0, 0), new mt.Point(1, 0), new mt.Point(1, -1)]
+      vertices = [new mt.Point(0, 0), new mt.Point(1, 0), new mt.Point(1, 1)]
       scaledVertices = grid.scalePoints(vertices)
       mt.drawTriangle(two, scaledVertices, 'red')
     }
