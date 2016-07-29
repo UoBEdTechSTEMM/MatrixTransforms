@@ -178,7 +178,29 @@ var matrix = {};
     $('#matrixElemC').on('input', updateDisplay)
     $('#matrixElemD').on('input', updateDisplay)
 
-    // Draw initial update
+    // Button that swaps the inverse and transformation matrices
+    $('#swapMatrices').click(function () {
+      var temp = $('#matrixElemA').val()
+      $('#matrixElemA').val($('#invMatrixElemA').text())
+      $('#invMatrixElemA').text(temp)
+
+      temp = $('#matrixElemB').val()
+      $('#matrixElemB').val($('#invMatrixElemB').text())
+      $('#invMatrixElemB').text(temp)
+
+      temp = $('#matrixElemC').val()
+      $('#matrixElemC').val($('#invMatrixElemC').text())
+      $('#invMatrixElemC').text(temp)
+
+      temp = $('#matrixElemD').val()
+      $('#matrixElemD').val($('#invMatrixElemD').text())
+      $('#invMatrixElemD').text(temp)
+
+      // Refresh everything
+      updateDisplay()
+    })
+
+    // Draw initial display
     updateDisplay()
     two.update()
   }
