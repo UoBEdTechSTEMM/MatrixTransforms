@@ -20,7 +20,12 @@ var matrix = {};
 
   mt.Matrix.prototype.getInverse = function () {
     var det = this.getDeterminant()
-    return new mt.Matrix(this.d / det, -this.b / det, -this.c / det, this.a / det)
+
+    if (det === 0) {
+      return { exists: false }
+    }
+
+    return { exists: true, matrix: mt.Matrix(this.d / det, -this.b / det, -this.c / det, this.a / det) }
   }
 
   mt.Matrix.prototype.toString = function () {
@@ -126,7 +131,7 @@ var matrix = {};
       mt.drawTriangle(two, scaledVertices, 'red')
     }
 
-    $('#renderMatrix').click(function () {
+    function updateDisplay () {
       // Clear the screen and redraw initial stuff
       two.clear()
       drawGridAndUntransformedTriangle()
@@ -145,11 +150,19 @@ var matrix = {};
       // Transform to screen coordinates
       scaledVertices = grid.scalePoints(newVertices)
 
-        // Draw the transformed triangle
+      // Draw the transformed triangle
       mt.drawTriangle(two, scaledVertices, 'green')
 
+      // Calculate inverse if it exists
+
+      // Update screen
       two.update()
-    })
+    }
+
+    $('#matrixElemA').change(updateDisplay)
+    $('#matrixElemB').change(updateDisplay)
+    $('#matrixElemC').change(updateDisplay)
+    $('#matrixElemD').change(updateDisplay)
 
     // Draw initial grid and triangle
     drawGridAndUntransformedTriangle()
