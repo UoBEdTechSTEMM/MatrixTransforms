@@ -48,44 +48,77 @@ var matrix = {};
   // Grid
 
   /* @param{rect} rectangle { x, y, width, height } bounding the grid.
-   * @param{numTicks} number of ticks on each axis. Defaults to 10.
-   * @param{tickSpacing} { x, y } spacing of ticks in the x, y direction. Defaults
-   *    to { x: rect.width / numTicks, y: rect.height / numTicks }
-   * @param{tickLength} length in pixels of the tickmark rendered on the grid. Defaults to 10. */
-  mt.Grid = function (rect, numTicks, tickSpacing, tickLength) {
-    if (numTicks === undefined) {
-      numTicks = 10
-    }
-    if (tickSpacing === undefined) {
-      tickSpacing = { x: rect.width / numTicks, y: rect.height / numTicks }
-    }
-    if (tickLength === undefined) {
-      tickLength = 10
-    }
+   * @params{options} object of the form:
+   * var options = {
+   *   numTicks,    // number of ticks on each axis. Defaults to 10.
+   *   tickSpacing, // { x, y } spacing of ticks in the x, y direction. Defaults
+   *                // to { x: rect.width / numTicks, y: rect.height / numTicks }
+   *   tickLength,  // length in pixels of the tickmark rendered on the grid. Defaults to 10.
+   *   gridlines    // true if you want dashed gridlines on each tick, defaults to true
+   * }
+   */
+  mt.Grid = function (rect, options) {
     this.rect = rect
-    this.numTicks = numTicks
-    this.tickSpacing = tickSpacing
-    this.tickLength = tickLength
+    this.numTicks = options.numTicks
+    this.tickSpacing = options.tickSpacing
+    this.tickLength = options.tickLength
+    this.gridlines = options.gridlines
     this.center = { x: (this.rect.width / 2) + this.rect.x,
                     y: (this.rect.height / 2) + this.rect.y }
+
+    if (this.numTicks === undefined) {
+      this.numTicks = 10
+    }
+    if (this.tickSpacing === undefined) {
+      this.tickSpacing = { x: rect.width / this.numTicks, y: rect.height / this.numTicks }
+    }
+    if (this.tickLength === undefined) {
+      this.tickLength = 10
+    }
+    if (this.gridlines === undefined) {
+      this.gridlines = true
+    }
   }
 
   /* Draw the grid onto the two.js instance */
   mt.Grid.prototype.draw = function (two) {
-    // Draw the vertical and horizontal axes
-    two.makeLine(this.center.x, this.rect.y, this.center.x, this.rect.height + this.rect.y)
-    two.makeLine(this.rect.x, this.center.y, this.rect.width + this.rect.x, this.center.y)
+    var gridX
+    var gridY
+    var gridlineColor = '#ccc'
 
-    // Draw the horizontal tickmarks
     for (var x = 0; x <= this.rect.width / this.tickSpacing.x; x++) {
+      // Draw horizontal gridlines
+      if (this.gridlines) {
+        gridX = two.makeLine(x * this.tickSpacing.x + this.rect.x, this.rect.y,
+          x * this.tickSpacing.x + this.rect.x, this.rect.height + this.rect.y)
+
+        gridX.linewidth = 1
+        gridX.stroke = gridlineColor
+      }
+
+      // Draw horizontal tickmarks
       two.makeLine(x * this.tickSpacing.x + this.rect.x, this.center.y - this.tickLength / 2,
         x * this.tickSpacing.x + this.rect.x, this.center.y + this.tickLength / 2)
     }
-    // Draw the vertical tickmarks
+
     for (var y = 0; y <= this.rect.height / this.tickSpacing.y; y++) {
+      // Draw vertical gridlines
+      if (this.gridlines) {
+        gridY = two.makeLine(this.rect.x, y * this.tickSpacing.y + this.rect.y,
+                this.rect.height + this.rect.x, y * this.tickSpacing.y + this.rect.y)
+
+        gridY.linewidth = 1
+        gridY.stroke = gridlineColor
+      }
+
+      // Draw vertical tickmarks
       two.makeLine(this.center.x - this.tickLength / 2, y * this.tickSpacing.y + this.rect.y,
         this.center.x + this.tickLength / 2, y * this.tickSpacing.y + this.rect.y)
     }
+
+    // Finally, draw the vertical and horizontal axes
+    two.makeLine(this.center.x, this.rect.y, this.center.x, this.rect.height + this.rect.y)
+    two.makeLine(this.rect.x, this.center.y, this.rect.width + this.rect.x, this.center.y)
   }
 
   /* Transform right-handed grid coordinates into left-handed, scaled screen coordinates */
@@ -112,6 +145,7 @@ var matrix = {};
     triangle.fill = color
   }
 
+  // The main application closure
   mt.runApp = function (canvasElem) {
     var two = new Two({ width: 500, height: 500 }).appendTo(canvasElem)
 
@@ -120,7 +154,7 @@ var matrix = {};
     var rect = { x: pad, y: pad, width: two.width - pad * 2, height: two.height - pad * 2 }
 
     // Create the grid
-    var grid = new mt.Grid(rect, 20)
+    var grid = new mt.Grid(rect, { numTicks: 20 })
     var vertices
     var scaledVertices
 
@@ -128,7 +162,14 @@ var matrix = {};
     var matrix
     var inverseMatrix
 
-    function drawGridAndUntransformedTriangle () {
+    // Called whenver display is to be updated
+    function updateDisplay () {
+      var transformedVertices
+      var res
+
+      // Clear the screen and draw initial stuff
+      two.clear()
+
       // Draw the grid
       grid.draw(two)
 
@@ -136,32 +177,24 @@ var matrix = {};
       vertices = [new mt.Point(0, 0), new mt.Point(1, 0), new mt.Point(1, 1)]
       scaledVertices = grid.scalePoints(vertices)
       mt.drawTriangle(two, scaledVertices, 'red')
-    }
-
-    function updateDisplay () {
-      // Clear the screen and redraw initial stuff
-      two.clear()
-      drawGridAndUntransformedTriangle()
 
       // Get the matrix elements from page
       matrix = new mt.Matrix($('#matrixElemA').val(), $('#matrixElemB').val(),
         $('#matrixElemC').val(), $('#matrixElemD').val())
 
-      var newVertices = [new mt.Point(0, 0)]
+      transformedVertices = []
 
       // Apply transformation matrix to each vertex
-      for (var i = 1; i < vertices.length; i++) {
-        newVertices.push(vertices[i].applyMatrix(matrix))
+      for (var i = 0; i < vertices.length; i++) {
+        transformedVertices.push(vertices[i].applyMatrix(matrix))
       }
 
-      // Transform to screen coordinates
-      scaledVertices = grid.scalePoints(newVertices)
-
-      // Draw the transformed triangle
+      // Transform to screen coordinates and draw the triangle
+      scaledVertices = grid.scalePoints(transformedVertices)
       mt.drawTriangle(two, scaledVertices, 'green')
 
-      // Calculate inverse if it exists
-      var res = matrix.getInverse()
+      // Calculate and display the inverse
+      res = matrix.getInverse()
 
       if (res.exists) {
         inverseMatrix = res.matrix
@@ -174,7 +207,7 @@ var matrix = {};
       }
 
       // Re-render LaTeX
-      MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MathExample'])
+      MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
 
       // Update screen
       two.update()
