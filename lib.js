@@ -25,7 +25,7 @@ var matrix = {};
       return { exists: false }
     }
 
-    return { exists: true, matrix: mt.Matrix(this.d / det, -this.b / det, -this.c / det, this.a / det) }
+    return { exists: true, matrix: new mt.Matrix(this.d / det, -this.b / det, -this.c / det, this.a / det) }
   }
 
   mt.Matrix.prototype.toString = function () {
@@ -154,18 +154,32 @@ var matrix = {};
       mt.drawTriangle(two, scaledVertices, 'green')
 
       // Calculate inverse if it exists
+      var res = matrix.getInverse()
+
+      if (res.exists) {
+        $('#invMatrixElemA').text(res.matrix.a)
+        $('#invMatrixElemB').text(res.matrix.b)
+        $('#invMatrixElemC').text(res.matrix.c)
+        $('#invMatrixElemD').text(res.matrix.d)
+      } else {
+        $('#invMatrixElemA').text(0)
+        $('#invMatrixElemB').text(0)
+        $('#invMatrixElemC').text(0)
+        $('#invMatrixElemD').text(0)
+      }
 
       // Update screen
       two.update()
     }
 
-    $('#matrixElemA').change(updateDisplay)
-    $('#matrixElemB').change(updateDisplay)
-    $('#matrixElemC').change(updateDisplay)
-    $('#matrixElemD').change(updateDisplay)
+    // Add event handler to update display on change
+    $('#matrixElemA').on('input', updateDisplay)
+    $('#matrixElemB').on('input', updateDisplay)
+    $('#matrixElemC').on('input', updateDisplay)
+    $('#matrixElemD').on('input', updateDisplay)
 
-    // Draw initial grid and triangle
-    drawGridAndUntransformedTriangle()
+    // Draw initial update
+    updateDisplay()
     two.update()
   }
 })(matrix)
