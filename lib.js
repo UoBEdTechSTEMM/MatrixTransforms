@@ -84,7 +84,7 @@ var matrix = {};
   mt.Grid.prototype.draw = function (two) {
     var gridX
     var gridY
-    var gridlineColor = '#ccc'
+    var gridlineColor = '#ddd'
 
     for (var x = 0; x <= this.rect.width / this.tickSpacing.x; x++) {
       // Draw horizontal gridlines
@@ -138,23 +138,27 @@ var matrix = {};
     return scaled
   }
 
-  mt.drawTriangle = function (two, vertices, color) {
+  mt.drawTriangle = function (two, vertices, fillColor, strokeColor) {
     var triangle = two.makePath(vertices[0].x, vertices[0].y,
-      vertices[1].x, vertices[1].y, vertices[2].x, vertices[2].y, true)
+      vertices[1].x, vertices[1].y, vertices[2].x, vertices[2].y, false)
 
-    triangle.fill = color
+    triangle.fill = fillColor
+    triangle.stroke = strokeColor
+    triangle.linewidth = 1.5
+    triangle.opacity = 0.5
   }
 
   // The main application closure
   mt.runApp = function (canvasElem) {
-    var two = new Two({ width: 500, height: 500 }).appendTo(canvasElem)
+    var two = new Two({ width: 700, height: 700 }).appendTo(canvasElem)
 
     // Bounding rectangle for the grid
     var pad = 10
     var rect = { x: pad, y: pad, width: two.width - pad * 2, height: two.height - pad * 2 }
+    var numTicks = 10
 
     // Create the grid
-    var grid = new mt.Grid(rect, { numTicks: 20 })
+    var grid = new mt.Grid(rect, { numTicks: numTicks })
     var vertices
     var scaledVertices
 
@@ -176,7 +180,7 @@ var matrix = {};
       // Draw an untransformed triangle
       vertices = [new mt.Point(0, 0), new mt.Point(1, 0), new mt.Point(1, 1)]
       scaledVertices = grid.scalePoints(vertices)
-      mt.drawTriangle(two, scaledVertices, 'red')
+      mt.drawTriangle(two, scaledVertices, '#FF9E96', '#F45346')
 
       // Get the matrix elements from page
       matrix = new mt.Matrix($('#matrixElemA').val(), $('#matrixElemB').val(),
@@ -191,7 +195,7 @@ var matrix = {};
 
       // Transform to screen coordinates and draw the triangle
       scaledVertices = grid.scalePoints(transformedVertices)
-      mt.drawTriangle(two, scaledVertices, 'green')
+      mt.drawTriangle(two, scaledVertices, '#DAF791', '#B7E642')
 
       // Calculate and display the inverse
       res = matrix.getInverse()
