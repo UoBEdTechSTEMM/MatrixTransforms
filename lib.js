@@ -50,7 +50,7 @@ var matrix = {};
   /* @param{rect} rectangle { x, y, width, height } bounding the grid.
    * @param{numTicks} number of ticks on each axis. Defaults to 10.
    * @param{tickSpacing} { x, y } spacing of ticks in the x, y direction. Defaults
-   *    to { x: rect.width / 2, y: rect.height / 2 }
+   *    to { x: rect.width / numTicks, y: rect.height / numTicks }
    * @param{tickLength} length in pixels of the tickmark rendered on the grid. Defaults to 10. */
   mt.Grid = function (rect, numTicks, tickSpacing, tickLength) {
     if (numTicks === undefined) {
@@ -70,6 +70,7 @@ var matrix = {};
                     y: (this.rect.height / 2) + this.rect.y }
   }
 
+  /* Draw the grid onto the two.js instance */
   mt.Grid.prototype.draw = function (two) {
     // Draw the vertical and horizontal axes
     two.makeLine(this.center.x, this.rect.y, this.center.x, this.rect.height + this.rect.y)
@@ -87,6 +88,7 @@ var matrix = {};
     }
   }
 
+  /* Transform right-handed grid coordinates into left-handed, scaled screen coordinates */
   mt.Grid.prototype.gridToScreenCoords = function (point) {
     return new mt.Point(point.x * this.tickSpacing.x + this.center.x,
                        -point.y * this.tickSpacing.y + this.center.y)
