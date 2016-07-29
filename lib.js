@@ -239,16 +239,6 @@ var matrix = {};
       updateDisplay()
     })
 
-    // Set the max/min of the transformation matrix values so we cannot wildly exceed bounds
-    $('#matrixElemA').prop('min', -numTicks)
-    $('#matrixElemA').prop('max', numTicks)
-    $('#matrixElemB').prop('min', -numTicks)
-    $('#matrixElemB').prop('max', numTicks)
-    $('#matrixElemC').prop('min', -numTicks)
-    $('#matrixElemC').prop('max', numTicks)
-    $('#matrixElemD').prop('min', -numTicks)
-    $('#matrixElemD').prop('max', numTicks)
-
     // Draw initial display
     updateDisplay()
     two.update()

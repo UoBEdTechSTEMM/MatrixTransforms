@@ -14,6 +14,8 @@
   <!-- For drawing 2D graphics -->
   <script type="text/javascript" src="node_modules/two.js/build/two.js"></script>
 
+  <div id="hidePage" style="visibility:hidden">
+
   <h2>Matrix Transformations</h2>
   <p>
     <select id="shapeSelect">
@@ -25,11 +27,18 @@
 
   <p>Currently the transformation matrix is
     <br />
-    <div class="center preformatted">
-      [[<input id="matrixElemA" class="matrixInput" type="number" value="-2">,
+    <!-- <div class="center preformatted"> -->
+    <div>
+      <!-- [[<input id="matrixElemA" class="matrixInput" type="number" value="-2">,
         <input id="matrixElemB" class="matrixInput" type="number" value="0">], <br />
        &nbsp;[<input id="matrixElemC" class="matrixInput" type="number" value="0">,
-        <input id="matrixElemD" class="matrixInput" type="number" value="2">]]
+        <input id="matrixElemD" class="matrixInput" type="number" value="2">]] -->
+      \[
+      \begin{pmatrix}
+      \FormInput[][][-2]{matrixElemA} & \FormInput[][][0]{matrixElemB} \\
+      \FormInput[][][0]{matrixElemC} & \FormInput[][][2]{matrixElemD}
+      \end{pmatrix}
+      \]
     </div>
   </p>
 
