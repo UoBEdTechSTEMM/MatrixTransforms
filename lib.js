@@ -204,8 +204,8 @@ var matrix = {};
       if (res.exists) {
         inverseMatrix = res.matrix
         $('#inverseMatrix').text('\\[ \\begin{pmatrix} ' +
-          res.matrix.a + ' & ' + res.matrix.b + ' \\\\ ' +
-          res.matrix.c + ' &  ' + res.matrix.d + ' \\end{pmatrix} \\]')
+          res.matrix.a.toPrecision(3) + ' & ' + res.matrix.b.toPrecision(3) + ' \\\\ ' +
+          res.matrix.c.toPrecision(3) + ' &  ' + res.matrix.d.toPrecision(3) + ' \\end{pmatrix} \\]')
       } else {
         inverseMatrix = new mt.Matrix(0, 0, 0, 0)
         $('#inverseMatrix').val('\\[ \\begin{pmatrix} 0 & 0 \\ 0 & 0 \\end{pmatrix} \\]')
@@ -232,8 +232,8 @@ var matrix = {};
       $('#matrixElemD').val(inverseMatrix.d)
 
       $('#inverseMatrix').text('\\[ \\begin{pmatrix} ' +
-        matrix.a + ' & ' + matrix.b + ' \\\\ ' +
-        matrix.c + ' &  ' + matrix.d + ' \\end{pmatrix} \\]')
+        matrix.a.toPrecision(3) + ' & ' + matrix.b.toPrecision(3) + ' \\\\ ' +
+        matrix.c.toPrecision(3) + ' &  ' + matrix.d.toPrecision(3) + ' \\end{pmatrix} \\]')
 
       // Refresh everything
       updateDisplay()
