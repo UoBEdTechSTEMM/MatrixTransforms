@@ -26,18 +26,29 @@
     </select>
   </p>
 
+  <div class="wrapper">
+    <div>
+      <div id="scaleMatrix">
+        \(
+        \begin{pmatrix}
+        \FormInput[][matrixInputSmaller][1]{scaleMatrixElem} & 0 \\
+        0 & 1
+        \end{pmatrix}
+        \)
+      </div>
+      <br />
+      <input type="button" id="addScaleMatrix" value="Add">
+    </div>
+  </div>
+
   <p>Currently the transformation matrix applied to each vertex is
     <br />
-    <!-- <div class="center preformatted"> -->
+
     <div>
-      <!-- [[<input id="matrixElemA" class="matrixInput" type="number" value="-2">,
-        <input id="matrixElemB" class="matrixInput" type="number" value="0">], <br />
-       &nbsp;[<input id="matrixElemC" class="matrixInput" type="number" value="0">,
-        <input id="matrixElemD" class="matrixInput" type="number" value="2">]] -->
       \[
       \begin{pmatrix}
-      \FormInput[][matrixInput][-2]{matrixElemA} & \FormInput[][matrixInput][0]{matrixElemB} \\
-      \FormInput[][matrixInput][0]{matrixElemC} & \FormInput[][matrixInput][2]{matrixElemD}
+      \FormInput[][matrixInput][1]{matrixElemA} & \FormInput[][matrixInput][0]{matrixElemB} \\
+      \FormInput[][matrixInput][0]{matrixElemC} & \FormInput[][matrixInput][1]{matrixElemD}
       \end{pmatrix}
       \]
     </div>

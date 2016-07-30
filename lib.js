@@ -29,6 +29,10 @@ var matrix = matrix || {};
     return { exists: true, matrix: new mt.Matrix(this.d / det, -this.b / det, -this.c / det, this.a / det) }
   }
 
+  mt.Matrix.prototype.add = function (m) {
+    return new mt.Matrix(this.a + m.a, this.b + m.b, this.c + m.c, this.d + m.d)
+  }
+
   mt.Matrix.prototype.toString = function () {
     return '[[' + this.a + ', ' + this.b + '], [' + this.c + ', ' + this.d + ']]'
   }
@@ -204,15 +208,6 @@ var matrix = matrix || {};
       scaledVertices = grid.scalePoints(vertices)
       mt.drawPath(two, scaledVertices, '#FF9E96', '#F45346')
 
-      // Get the matrix elements from page
-      matrix = new mt.Matrix(Number($('#matrixElemA').val()), Number($('#matrixElemB').val()),
-        Number($('#matrixElemC').val()), Number($('#matrixElemD').val()))
-
-      // Check if there are any bad values, if so, break
-      if (isNaN(matrix.a) || isNaN(matrix.b) || isNaN(matrix.c) || isNaN(matrix.d)) {
-        return
-      }
-
       transformedVertices = []
 
       // Apply transformation matrix to each vertex
@@ -247,11 +242,34 @@ var matrix = matrix || {};
       two.update()
     }
 
+    // Get new values from the transformation matrix on the page and display them, updating the display afterwards
+    function getNewMatrixValuesAndUpdate () {
+      // Get the matrix elements from page
+      matrix = new mt.Matrix(Number($('#matrixElemA').val()), Number($('#matrixElemB').val()),
+        Number($('#matrixElemC').val()), Number($('#matrixElemD').val()))
+
+      // Check if there are any bad values, if so, break
+      if (isNaN(matrix.a) || isNaN(matrix.b) || isNaN(matrix.c) || isNaN(matrix.d)) {
+        return
+      }
+
+      updateDisplay()
+    }
+
+    // Refresh the transformation matrix on the page with the current matrix values
+    function updateTransformationMatrixDisplay () {
+      // Divide by 1 to remove trailing zeroes
+      $('#matrixElemA').val(matrix.a.toFixed(decimalPlaces) / 1)
+      $('#matrixElemB').val(matrix.b.toFixed(decimalPlaces) / 1)
+      $('#matrixElemC').val(matrix.c.toFixed(decimalPlaces) / 1)
+      $('#matrixElemD').val(matrix.d.toFixed(decimalPlaces) / 1)
+    }
+
     // Add event handler to update display on change
-    $('#matrixElemA').on('input', updateDisplay)
-    $('#matrixElemB').on('input', updateDisplay)
-    $('#matrixElemC').on('input', updateDisplay)
-    $('#matrixElemD').on('input', updateDisplay)
+    $('#matrixElemA').on('input', getNewMatrixValuesAndUpdate)
+    $('#matrixElemB').on('input', getNewMatrixValuesAndUpdate)
+    $('#matrixElemC').on('input', getNewMatrixValuesAndUpdate)
+    $('#matrixElemD').on('input', getNewMatrixValuesAndUpdate)
 
     // Add event handler to button that swaps the inverse and transformation matrices
     $('#swapMatrices').click(function () {
@@ -272,13 +290,40 @@ var matrix = matrix || {};
     // Add event handler for shape selection drop-down list
     $('#shapeSelect').change(function () {
       currentShape = $('#shapeSelect option:selected').text()
-
-      // Refresh everything
       updateDisplay()
     })
 
+    // Add event handler for add scale matrix button
+    $('#addScaleMatrix').click(function () {
+      // Add scale matrix to the current matrix and update transformation matrix and display
+      if (!isNaN($('#scaleMatrixElem').val())) {
+        matrix = matrix.add(new mt.Matrix(Number($('#scaleMatrixElem').val()), 0, 0, Number($('#scaleMatrixElem').val())))
+        updateTransformationMatrixDisplay()
+        updateDisplay()
+      }
+    })
+
+    // Makes sure that both diagonal elements of scale matrix are equal
+    function scaleEventHandler () {
+      if (!isNaN($('#scaleMatrixElem').val()) && $('#scaleMatrixElem').val() !== '') {
+        $('#scaleMatrix').text('\\(\\begin{pmatrix} ' +
+          '\\FormInput[][matrixInputSmaller][' + $('#scaleMatrixElem').val() + ']{scaleMatrixElem} & 0 \\\\ 0 & ' +
+          $('#scaleMatrixElem').val() + '\\end{pmatrix} \\)')
+
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
+
+        // Re-register event handler after MathJax refresh
+        MathJax.Hub.Queue(function () {
+          $('#scaleMatrixElem').on('input', scaleEventHandler)
+        })
+      }
+    }
+
+    // Add event handler so that both diagonal elements of the scale matrix are equal
+    $('#scaleMatrixElem').on('input', scaleEventHandler)
+
     // Draw initial display
-    updateDisplay()
+    getNewMatrixValuesAndUpdate()
     two.update()
   }
 })(matrix)

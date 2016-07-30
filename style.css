@@ -26,11 +26,22 @@ h2 {
   padding-top: 1em;
 }
 
+.wrapper {
+  display: flex;
+}
+
 .matrixInput, .matrixOutput {
   font-family: "Monaco", "Inconsolata", monospace;
   margin-left: 0.5em;
   margin-right: 0.5em;
   width: 5em;
+}
+
+.matrixInput {
+  font-family: "Monaco", "Inconsolata", monospace;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  width: 2em;
 }
 
 .preformatted {
