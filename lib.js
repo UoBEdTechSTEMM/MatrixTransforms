@@ -212,9 +212,11 @@ var matrix = {};
       // If it exists, save it and display it, else set the inverse matrix to null
       if (res.exists) {
         inverseMatrix = res.matrix
+
+        // Divide by 1 to remove trailing zeroes
         $('#inverseMatrix').text('\\[ \\begin{pmatrix} ' +
-          res.matrix.a.toFixed(decimalPlaces) + ' & ' + res.matrix.b.toFixed(decimalPlaces) + ' \\\\ ' +
-          res.matrix.c.toFixed(decimalPlaces) + ' &  ' + res.matrix.d.toFixed(decimalPlaces) + ' \\end{pmatrix} \\]')
+          res.matrix.a.toFixed(decimalPlaces) / 1 + ' & ' + res.matrix.b.toFixed(decimalPlaces) / 1 + ' \\\\ ' +
+          res.matrix.c.toFixed(decimalPlaces) / 1 + ' &  ' + res.matrix.d.toFixed(decimalPlaces) / 1 + ' \\end{pmatrix} \\]')
       } else {
         inverseMatrix = new mt.Matrix(0, 0, 0, 0)
         $('#inverseMatrix').text('\\[ \\begin{pmatrix} 0 & 0 \\\\ 0 & 0 \\end{pmatrix} \\]')
@@ -235,14 +237,15 @@ var matrix = {};
 
     // Add event handler to button that swaps the inverse and transformation matrices
     $('#swapMatrices').click(function () {
-      $('#matrixElemA').val(inverseMatrix.a.toFixed(decimalPlaces))
-      $('#matrixElemB').val(inverseMatrix.b.toFixed(decimalPlaces))
-      $('#matrixElemC').val(inverseMatrix.c.toFixed(decimalPlaces))
-      $('#matrixElemD').val(inverseMatrix.d.toFixed(decimalPlaces))
+      // Divide by 1 to remove trailing zeroes
+      $('#matrixElemA').val(inverseMatrix.a.toFixed(decimalPlaces) / 1)
+      $('#matrixElemB').val(inverseMatrix.b.toFixed(decimalPlaces) / 1)
+      $('#matrixElemC').val(inverseMatrix.c.toFixed(decimalPlaces) / 1)
+      $('#matrixElemD').val(inverseMatrix.d.toFixed(decimalPlaces) / 1)
 
       $('#inverseMatrix').text('\\[ \\begin{pmatrix} ' +
-        matrix.a.toFixed(decimalPlaces) + ' & ' + matrix.b.toFixed(decimalPlaces) + ' \\\\ ' +
-        matrix.c.toFixed(decimalPlaces) + ' &  ' + matrix.d.toFixed(decimalPlaces) + ' \\end{pmatrix} \\]')
+        matrix.a.toFixed(decimalPlaces) / 1 + ' & ' + matrix.b.toFixed(decimalPlaces) / 1 + ' \\\\ ' +
+        matrix.c.toFixed(decimalPlaces) / 1 + ' &  ' + matrix.d.toFixed(decimalPlaces) / 1 + ' \\end{pmatrix} \\]')
 
       // Refresh everything
       updateDisplay()
