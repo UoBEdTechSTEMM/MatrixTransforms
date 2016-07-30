@@ -33,6 +33,15 @@ var matrix = matrix || {};
     return new mt.Matrix(this.a + m.a, this.b + m.b, this.c + m.c, this.d + m.d)
   }
 
+  mt.Matrix.prototype.multiplyRight = function (m) {
+    return new mt.Matrix(this.a * m.a + this.b * m.c, this.a * m.b + this.b * m.d,
+                         this.c * m.a + this.d * m.c, this.c * m.b + this.d * m.d)
+  }
+
+  mt.Matrix.prototype.multiplyLeft = function (m) {
+    return m.multiplyRight(this)
+  }
+
   mt.Matrix.prototype.toString = function () {
     return '[[' + this.a + ', ' + this.b + '], [' + this.c + ', ' + this.d + ']]'
   }
@@ -295,11 +304,11 @@ var matrix = matrix || {};
       updateDisplay()
     })
 
-    // Add event handler for add scale matrix button
-    $('#addScaleMatrix').click(function () {
-      // Add scale matrix to the current matrix and update transformation matrix and display
+    // Add event handler for apply scale matrix button
+    $('#applyScaleMatrix').click(function () {
+      // Multiply current matrix from left by scale matrix and update transformation matrix and display
       if (!isNaN($('#scaleMatrixElem').val())) {
-        matrix = matrix.add(new mt.Matrix(Number($('#scaleMatrixElem').val()), 0, 0, Number($('#scaleMatrixElem').val())))
+        matrix = matrix.multiplyLeft(new mt.Matrix(Number($('#scaleMatrixElem').val()), 0, 0, Number($('#scaleMatrixElem').val())))
         updateTransformationMatrixDisplay()
         updateDisplay()
       }
@@ -324,13 +333,13 @@ var matrix = matrix || {};
     // Add event handler so that both diagonal elements of the scale matrix are equal
     $('#rotationAngle').on('input', scaleEventHandler)
 
-    // Add event handler for add rotation matrix button
-    $('#addRotationMatrix').click(function () {
-      // Add rotation matrix to the current matrix and update transformation matrix and display
+    // Add event handler for apply rotation matrix button
+    $('#applyRotationMatrix').click(function () {
+      // Multiply current matrix from left by rotation matrix and update transformation matrix and display
       if (!isNaN($('#rotationAngle').val())) {
         var angle = Number($('#rotationAngle').val()) * (180 / Math.PI)
 
-        matrix = matrix.add(new mt.Matrix(Math.cos(angle), -Math.sin(angle), Math.sin(angle), Math.cos(angle)))
+        matrix = matrix.multiplyLeft(new mt.Matrix(Math.cos(angle), -Math.sin(angle), Math.sin(angle), Math.cos(angle)))
         updateTransformationMatrixDisplay()
         updateDisplay()
       }
