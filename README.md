@@ -2,7 +2,7 @@
 
 Hello :wave: This is a Two.JS Visualisation of how matrix transformations affect a simple shape on a grid.
 
-`lib.js` contains the main code of our program. `app.js` just calls the `matrix.run` function with the canvas element we want to draw to.
+`lib.js` contains the main code of our program. `app.js` adds a callback to the end of the MathJax rendering queue, so that when MathJax has finished loading, the `matrix.runApp` function is called with the div element that we want to include the canvas/SVG element in.
 
 
 [Try it out on rawgit :sushi:](https://rawgit.com/UoBEdTechSTEMM/MatrixTransforms/master/index.html)

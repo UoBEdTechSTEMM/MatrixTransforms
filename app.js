@@ -5,7 +5,7 @@ MathJax.Hub.Queue(function () {
   // Unhide page
   $('#hidePage').css('visibility', '')
 
-  // Get the canvas element
+  // Get the canvas container
   var elem = $('#canvasContainer')[0]
 
   // Run the app
