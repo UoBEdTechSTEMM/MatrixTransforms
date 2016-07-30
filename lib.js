@@ -184,8 +184,8 @@ var matrix = {};
       mt.drawTriangle(two, scaledVertices, '#FF9E96', '#F45346')
 
       // Get the matrix elements from page
-      matrix = new mt.Matrix($('#matrixElemA').val(), $('#matrixElemB').val(),
-        $('#matrixElemC').val(), $('#matrixElemD').val())
+      matrix = new mt.Matrix(Number($('#matrixElemA').val()), Number($('#matrixElemB').val()),
+        Number($('#matrixElemC').val()), Number($('#matrixElemD').val()))
 
       // Check if there are any bad values, if so, break
       if (isNaN(matrix.a) || isNaN(matrix.b) || isNaN(matrix.c) || isNaN(matrix.d)) {
