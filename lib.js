@@ -285,10 +285,10 @@ var matrix = matrix || {};
     // Add event handler to button that swaps the inverse and transformation matrices
     $('#swapMatrices').click(function () {
       // Divide by 1 to remove trailing zeroes
-      $('#matrixElemA').val(inverseMatrix.a.toFixed(decimalPlaces) / 1)
-      $('#matrixElemB').val(inverseMatrix.b.toFixed(decimalPlaces) / 1)
-      $('#matrixElemC').val(inverseMatrix.c.toFixed(decimalPlaces) / 1)
-      $('#matrixElemD').val(inverseMatrix.d.toFixed(decimalPlaces) / 1)
+      matrix.a = inverseMatrix.a.toFixed(decimalPlaces) / 1
+      matrix.b = inverseMatrix.b.toFixed(decimalPlaces) / 1
+      matrix.c = inverseMatrix.c.toFixed(decimalPlaces) / 1
+      matrix.d = inverseMatrix.d.toFixed(decimalPlaces) / 1
 
       $('#inverseMatrix').text('\\[ \\begin{pmatrix} ' +
         matrix.a.toFixed(decimalPlaces) / 1 + ' & ' + matrix.b.toFixed(decimalPlaces) / 1 + ' \\\\ ' +
@@ -296,6 +296,7 @@ var matrix = matrix || {};
 
       // Refresh everything
       updateDisplay()
+      updateTransformationMatrixDisplay()
     })
 
     // Add event handler for shape selection drop-down list
