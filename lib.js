@@ -209,8 +209,8 @@ var matrix = {};
       if (res.exists) {
         inverseMatrix = res.matrix
         $('#inverseMatrix').text('\\[ \\begin{pmatrix} ' +
-          res.matrix.a.toPrecision(3) + ' & ' + res.matrix.b.toPrecision(3) + ' \\\\ ' +
-          res.matrix.c.toPrecision(3) + ' &  ' + res.matrix.d.toPrecision(3) + ' \\end{pmatrix} \\]')
+          res.matrix.a.toFixed(3) + ' & ' + res.matrix.b.toFixed(3) + ' \\\\ ' +
+          res.matrix.c.toFixed(3) + ' &  ' + res.matrix.d.toFixed(3) + ' \\end{pmatrix} \\]')
       } else {
         inverseMatrix = new mt.Matrix(0, 0, 0, 0)
         $('#inverseMatrix').val('\\[ \\begin{pmatrix} 0 & 0 \\ 0 & 0 \\end{pmatrix} \\]')
