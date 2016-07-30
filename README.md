@@ -21,6 +21,8 @@ Then you can run `standard` to lint your code and highlight any style errors.
 
 ## TODO
 
+* Have button below preset matrices *apply* matrix to current transformed vertices rather than *add* to current matrix
+
 * Add ~~gridlines~~ and axis numbering
 
 * Display the transformation matrix and points in LaTeX (MathJax?)
@@ -30,7 +32,7 @@ Then you can run `standard` to lint your code and highlight any style errors.
   * Display full transformation equation (M * vertex = transformed)
 
 
-* Have some preset matrices in a dropdown
+* ~~Have some preset matrices~~
 
 * Add new shapes
 

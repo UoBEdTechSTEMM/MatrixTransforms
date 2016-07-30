@@ -30,6 +30,11 @@ h2 {
   display: flex;
 }
 
+.item {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
 .matrixInput, .matrixOutput {
   font-family: "Monaco", "Inconsolata", monospace;
   margin-left: 0.5em;

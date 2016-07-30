@@ -27,7 +27,7 @@
   </p>
 
   <div class="wrapper">
-    <div>
+    <div class="item">
       <div id="scaleMatrix">
         \(
         \begin{pmatrix}
@@ -39,6 +39,18 @@
       <br />
       <input type="button" id="addScaleMatrix" value="Add">
     </div>
+    <div class="item">
+      <div id="rotationMatrix">
+        \(
+        \begin{pmatrix}
+        \cos{\FormInput[][matrixInputSmaller][30]{rotationAngle}} & -\sin{30} \\
+        \sin{30} & \cos{30}
+        \end{pmatrix}
+        \)
+      </div>
+      <br />
+      <input type="button" id="addRotationMatrix" value="Add">
+    </div>
   </div>
 
   <p>Currently the transformation matrix applied to each vertex is
@@ -47,8 +59,8 @@
     <div>
       \[
       \begin{pmatrix}
-      \FormInput[][matrixInput][1]{matrixElemA} & \FormInput[][matrixInput][0]{matrixElemB} \\
-      \FormInput[][matrixInput][0]{matrixElemC} & \FormInput[][matrixInput][1]{matrixElemD}
+      \FormInput[][matrixInput][0]{matrixElemA} & \FormInput[][matrixInput][0]{matrixElemB} \\
+      \FormInput[][matrixInput][0]{matrixElemC} & \FormInput[][matrixInput][0]{matrixElemD}
       \end{pmatrix}
       \]
     </div>

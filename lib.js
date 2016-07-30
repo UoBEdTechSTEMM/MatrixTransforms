@@ -265,6 +265,8 @@ var matrix = matrix || {};
       $('#matrixElemD').val(matrix.d.toFixed(decimalPlaces) / 1)
     }
 
+    // TODO: Maybe refactor event handling code out? (It's pretty long)
+
     // Add event handler to update display on change
     $('#matrixElemA').on('input', getNewMatrixValuesAndUpdate)
     $('#matrixElemB').on('input', getNewMatrixValuesAndUpdate)
@@ -320,7 +322,40 @@ var matrix = matrix || {};
     }
 
     // Add event handler so that both diagonal elements of the scale matrix are equal
-    $('#scaleMatrixElem').on('input', scaleEventHandler)
+    $('#rotationAngle').on('input', scaleEventHandler)
+
+    // Add event handler for add rotation matrix button
+    $('#addRotationMatrix').click(function () {
+      // Add rotation matrix to the current matrix and update transformation matrix and display
+      if (!isNaN($('#rotationAngle').val())) {
+        var angle = Number($('#rotationAngle').val()) * (180 / Math.PI)
+
+        matrix = matrix.add(new mt.Matrix(Math.cos(angle), -Math.sin(angle), Math.sin(angle), Math.cos(angle)))
+        updateTransformationMatrixDisplay()
+        updateDisplay()
+      }
+    })
+
+    // Makes sure that both diagonal elements of scale matrix are equal
+    function rotationEventHandler () {
+      if (!isNaN($('#rotationAngle').val()) && $('#rotationAngle').val() !== '') {
+        var angle = $('#rotationAngle').val()
+
+        $('#rotationMatrix').text('\\(\\begin{pmatrix} ' +
+          '\\cos{\\FormInput[][matrixInputSmaller][' + angle + ']{rotationAngle}} & -\\sin{' + angle + '}' +
+          '\\\\ \\sin{' + angle + '} & ' + ' \\cos{' + angle + '} \\end{pmatrix} \\)')
+
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
+
+        // Re-register event handler after MathJax refresh
+        MathJax.Hub.Queue(function () {
+          $('#rotationAngle').on('input', rotationEventHandler)
+        })
+      }
+    }
+
+    // Add event handler so that both diagonal elements of the scale matrix are equal
+    $('#rotationAngle').on('input', rotationEventHandler)
 
     // Draw initial display
     getNewMatrixValuesAndUpdate()
