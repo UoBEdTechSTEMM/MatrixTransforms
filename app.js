@@ -1,11 +1,4 @@
 
-// Forminput extension for LaTeX Inputs
-MathJax.Hub.Config({
-  TeX: {
-    extensions: ['[Contrib]/forminput/forminput.js']
-  }
-})
-
 /* Run app when all MathJax has loaded.
  * Needed because matrix element inputs are MathJax and we will be adding event listeners */
 MathJax.Hub.Queue(function () {
