@@ -331,7 +331,7 @@ var matrix = matrix || {};
     }
 
     // Add event handler so that both diagonal elements of the scale matrix are equal
-    $('#rotationAngle').on('input', scaleEventHandler)
+    $('#scaleMatrixElem').on('input', scaleEventHandler)
 
     // Add event handler for apply rotation matrix button
     $('#applyRotationMatrix').click(function () {
