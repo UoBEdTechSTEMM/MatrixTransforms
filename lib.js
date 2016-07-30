@@ -139,14 +139,23 @@ var matrix = {};
     return scaled
   }
 
-  mt.drawTriangle = function (two, vertices, fillColor, strokeColor) {
-    var triangle = two.makePath(vertices[0].x, vertices[0].y,
-      vertices[1].x, vertices[1].y, vertices[2].x, vertices[2].y, false)
+  mt.drawPath = function (two, vertices, fillColor, strokeColor) {
+    // Flatten vertices into a single array of x and y values
+    var v = []
+    for (var i = 0; i < vertices.length; ++i) {
+      v.push(vertices[i].x)
+      v.push(vertices[i].y)
+    }
+    // Finally push the boolean saying we want a closed path
+    v.push(false)
 
-    triangle.fill = fillColor
-    triangle.stroke = strokeColor
-    triangle.linewidth = 2
-    triangle.opacity = 0.5
+    // Pass the arguments as an array, this bit is a bit tricky
+    var path = two.makePath.apply(two, v)
+
+    path.fill = fillColor
+    path.stroke = strokeColor
+    path.linewidth = 2
+    path.opacity = 0.5
   }
 
   // The main application closure
@@ -170,6 +179,9 @@ var matrix = {};
     var matrix
     var inverseMatrix
 
+    // Current shape to draw
+    var currentShape = 'Triangle'
+
     // Called whenver display is to be updated
     function updateDisplay () {
       var transformedVertices
@@ -181,10 +193,16 @@ var matrix = {};
       // Draw the grid
       grid.draw(two)
 
-      // Draw an untransformed triangle
-      vertices = [new mt.Point(0, 0), new mt.Point(1, 0), new mt.Point(1, 1)]
+      // Draw the untransformed shape
+      if (currentShape === 'Triangle') {
+        vertices = [new mt.Point(0, 0), new mt.Point(1, 0), new mt.Point(1, 1)]
+      } else if (currentShape === 'Square') {
+        vertices = [new mt.Point(0, 0), new mt.Point(1, 0), new mt.Point(1, 1), new mt.Point(0, 1)]
+      }
+
+      // Scale the vertices and draw the shape
       scaledVertices = grid.scalePoints(vertices)
-      mt.drawTriangle(two, scaledVertices, '#FF9E96', '#F45346')
+      mt.drawPath(two, scaledVertices, '#FF9E96', '#F45346')
 
       // Get the matrix elements from page
       matrix = new mt.Matrix(Number($('#matrixElemA').val()), Number($('#matrixElemB').val()),
@@ -204,7 +222,7 @@ var matrix = {};
 
       // Transform to screen coordinates and draw the triangle
       scaledVertices = grid.scalePoints(transformedVertices)
-      mt.drawTriangle(two, scaledVertices, '#DAF791', '#A1D916')
+      mt.drawPath(two, scaledVertices, '#DAF791', '#A1D916')
 
       // Calculate and display the inverse
       res = matrix.getInverse()
@@ -246,6 +264,14 @@ var matrix = {};
       $('#inverseMatrix').text('\\[ \\begin{pmatrix} ' +
         matrix.a.toFixed(decimalPlaces) / 1 + ' & ' + matrix.b.toFixed(decimalPlaces) / 1 + ' \\\\ ' +
         matrix.c.toFixed(decimalPlaces) / 1 + ' &  ' + matrix.d.toFixed(decimalPlaces) / 1 + ' \\end{pmatrix} \\]')
+
+      // Refresh everything
+      updateDisplay()
+    })
+
+    // Add event handler for shape selection drop-down list
+    $('#shapeSelect').change(function () {
+      currentShape = $('#shapeSelect option:selected').text()
 
       // Refresh everything
       updateDisplay()

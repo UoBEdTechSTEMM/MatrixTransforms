@@ -34,6 +34,11 @@ Then you can run `standard` to lint your code and highlight any style errors.
 
 * Add new shapes
 
+  * ~~Square~~
+  * Circle? (Harder)
+  * Allow user to click points to create arbitrary polygon
+
+
 * Animation of transformation process in elementary steps
 
 * Sequencing of transformations
