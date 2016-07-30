@@ -163,6 +163,9 @@ var matrix = {};
     var vertices
     var scaledVertices
 
+    // Num decimal places to truncate to
+    var decimalPlaces = 3
+
     // Store both matrices (for swapping them using the swap button)
     var matrix
     var inverseMatrix
@@ -206,14 +209,15 @@ var matrix = {};
       // Calculate and display the inverse
       res = matrix.getInverse()
 
+      // If it exists, save it and display it, else set the inverse matrix to null
       if (res.exists) {
         inverseMatrix = res.matrix
         $('#inverseMatrix').text('\\[ \\begin{pmatrix} ' +
-          res.matrix.a.toFixed(3) + ' & ' + res.matrix.b.toFixed(3) + ' \\\\ ' +
-          res.matrix.c.toFixed(3) + ' &  ' + res.matrix.d.toFixed(3) + ' \\end{pmatrix} \\]')
+          res.matrix.a.toFixed(decimalPlaces) + ' & ' + res.matrix.b.toFixed(decimalPlaces) + ' \\\\ ' +
+          res.matrix.c.toFixed(decimalPlaces) + ' &  ' + res.matrix.d.toFixed(decimalPlaces) + ' \\end{pmatrix} \\]')
       } else {
         inverseMatrix = new mt.Matrix(0, 0, 0, 0)
-        $('#inverseMatrix').val('\\[ \\begin{pmatrix} 0 & 0 \\ 0 & 0 \\end{pmatrix} \\]')
+        $('#inverseMatrix').text('\\[ \\begin{pmatrix} 0 & 0 \\\\ 0 & 0 \\end{pmatrix} \\]')
       }
 
       // Re-render LaTeX
@@ -229,16 +233,16 @@ var matrix = {};
     $('#matrixElemC').on('input', updateDisplay)
     $('#matrixElemD').on('input', updateDisplay)
 
-    // Button that swaps the inverse and transformation matrices
+    // Add event handler to button that swaps the inverse and transformation matrices
     $('#swapMatrices').click(function () {
-      $('#matrixElemA').val(inverseMatrix.a)
-      $('#matrixElemB').val(inverseMatrix.b)
-      $('#matrixElemC').val(inverseMatrix.c)
-      $('#matrixElemD').val(inverseMatrix.d)
+      $('#matrixElemA').val(inverseMatrix.a.toFixed(decimalPlaces))
+      $('#matrixElemB').val(inverseMatrix.b.toFixed(decimalPlaces))
+      $('#matrixElemC').val(inverseMatrix.c.toFixed(decimalPlaces))
+      $('#matrixElemD').val(inverseMatrix.d.toFixed(decimalPlaces))
 
       $('#inverseMatrix').text('\\[ \\begin{pmatrix} ' +
-        matrix.a.toPrecision(3) + ' & ' + matrix.b.toPrecision(3) + ' \\\\ ' +
-        matrix.c.toPrecision(3) + ' &  ' + matrix.d.toPrecision(3) + ' \\end{pmatrix} \\]')
+        matrix.a.toFixed(decimalPlaces) + ' & ' + matrix.b.toFixed(decimalPlaces) + ' \\\\ ' +
+        matrix.c.toFixed(decimalPlaces) + ' &  ' + matrix.d.toFixed(decimalPlaces) + ' \\end{pmatrix} \\]')
 
       // Refresh everything
       updateDisplay()
