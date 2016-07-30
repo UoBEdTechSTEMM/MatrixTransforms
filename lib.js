@@ -351,7 +351,7 @@ var matrix = matrix || {};
         var angle = $('#rotationAngle').val()
 
         $('#rotationMatrix').text('\\(\\begin{pmatrix} ' +
-          '\\cos{\\FormInput[][matrixInputSmaller][' + angle + ']{rotationAngle}} & -\\sin{' + angle + '}' +
+          '\\cos{\\FormInput[][matrixInput][' + angle + ']{rotationAngle}} & -\\sin{' + angle + '}' +
           '\\\\ \\sin{' + angle + '} & ' + ' \\cos{' + angle + '} \\end{pmatrix} \\)')
 
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
