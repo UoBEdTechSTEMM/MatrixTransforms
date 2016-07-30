@@ -2,7 +2,7 @@
 /* color palette http://paletton.com/#uid=32i0B0kmRuDdfKki--+sHsUtYm0 */
 
 /* Library namespace */
-var matrix = {};
+var matrix = matrix || {};
 
 /* Our namespace function */
 (function (mt) {
