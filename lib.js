@@ -186,7 +186,7 @@ var matrix = matrix || {};
     // Current shape to draw
     var currentShape = 'Triangle'
 
-    // Called whenver display is to be updated
+    // Called whenever display is to be updated
     function updateDisplay () {
       var transformedVertices
       var res
