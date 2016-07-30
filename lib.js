@@ -337,7 +337,7 @@ var matrix = matrix || {};
     $('#applyRotationMatrix').click(function () {
       // Multiply current matrix from left by rotation matrix and update transformation matrix and display
       if (!isNaN($('#rotationAngle').val())) {
-        var angle = Number($('#rotationAngle').val()) * (180 / Math.PI)
+        var angle = Number($('#rotationAngle').val()) * (Math.PI / 180)
 
         matrix = matrix.multiplyLeft(new mt.Matrix(Math.cos(angle), -Math.sin(angle), Math.sin(angle), Math.cos(angle)))
         updateTransformationMatrixDisplay()
