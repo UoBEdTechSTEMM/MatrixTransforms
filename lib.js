@@ -276,7 +276,7 @@ var matrix = matrix || {};
 
     // TODO: Maybe refactor event handling code out? (It's pretty long)
 
-    // Add event handler to update display on change
+    // Add event handler to update transformation matrix on element change
     $('#matrixElemA').on('input', getNewMatrixValuesAndUpdate)
     $('#matrixElemB').on('input', getNewMatrixValuesAndUpdate)
     $('#matrixElemC').on('input', getNewMatrixValuesAndUpdate)
@@ -332,7 +332,7 @@ var matrix = matrix || {};
     }
 
     // Add event handler so that both diagonal elements of the scale matrix are equal
-    $('#scaleMatrixElem').on('input', scaleEventHandler)
+    $('#scaleMatrixElem').on('focusout', scaleEventHandler)
 
     // Add event handler for apply rotation matrix button
     $('#applyRotationMatrix').click(function () {
@@ -365,7 +365,7 @@ var matrix = matrix || {};
     }
 
     // Add event handler so that both diagonal elements of the scale matrix are equal
-    $('#rotationAngle').on('input', rotationEventHandler)
+    $('#rotationAngle').on('focusout', rotationEventHandler)
 
     // Draw initial display
     getNewMatrixValuesAndUpdate()
