@@ -367,6 +367,10 @@ var matrix = matrix || {};
     // Add event handler so that both diagonal elements of the scale matrix are equal
     $('#rotationAngle').on('focusout', rotationEventHandler)
 
+    // Make the list of matrices sortable
+    $('#sortable').sortable()
+    $('#sortable').disableSelection()
+
     // Draw initial display
     getNewMatrixValuesAndUpdate()
     two.update()
