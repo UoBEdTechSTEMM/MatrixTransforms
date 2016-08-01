@@ -39,6 +39,7 @@ Then you can run `standard` to lint your code and highlight any style errors.
   * ~~Non-commuting matrices~~
   * Button to push inverse of matrix onto list
   * Text label for each matrix
+  * ~~Undo button~~
 
 * ~~Have some preset matrices~~
 

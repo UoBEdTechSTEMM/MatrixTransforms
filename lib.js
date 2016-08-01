@@ -199,6 +199,9 @@ var matrix = matrix || {};
     // Current shape to draw
     var currentShape = 'Triangle'
 
+    // Store undo history stack
+    var undoHistory = []
+
     // Called whenever display is to be updated
     function updateDisplay () {
       var transformedVertices
@@ -312,9 +315,10 @@ var matrix = matrix || {};
     // Add event handler that adds a new matrix to the transformation list
     $('#addMatrixToList').click(function () {
       var newMatrix = $('#matrixSelect option:selected').text()
+
       if (newMatrix === 'Scale') {
         $('#sortable').append('<div class="item scaleMatrix">' +
-        '\\(' +
+          '\\(' +
           '\\begin{pmatrix}' +
           '\\FormInput[][matrixInputSmaller scaleMatrixElem][1]{} & 0 \\\\' +
           '0 & 1' +
@@ -353,6 +357,7 @@ var matrix = matrix || {};
           '\\end{pmatrix}' +
           '\\)' +
         '</div>')
+
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
       } else if (newMatrix === 'Skew Y') {
         $('#sortable').append('<div class="item skewYMatrix">' +
@@ -363,18 +368,22 @@ var matrix = matrix || {};
           '\\end{pmatrix}' +
           '\\)' +
         '</div>')
+
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
       } else if (newMatrix === 'Reflect X') {
         $('#sortable').append('<div class="item reflectXMatrix">' +
           '\\(\\begin{pmatrix} 1 & 0 \\\\ 0 & -1 \\end{pmatrix} \\) </div>')
+
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
       } else if (newMatrix === 'Reflect Y') {
         $('#sortable').append('<div class="item reflectYMatrix">' +
           '\\(\\begin{pmatrix} -1 & 0 \\\\ 0 & 1 \\end{pmatrix} \\) </div>')
+
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
       } else if (newMatrix === 'Reflect origin') {
         $('#sortable').append('<div class="item reflectOriginMatrix">' +
           '\\(\\begin{pmatrix} -1 & 0 \\\\ 0 & -1 \\end{pmatrix} \\) </div>')
+
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
       } else if (newMatrix === 'Arbitrary') {
         $('#sortable').append('<div class="item arbitraryMatrix">' +
@@ -385,6 +394,7 @@ var matrix = matrix || {};
           '\\end{pmatrix}' +
           '\\)' +
         '</div>')
+
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
       }
     })
@@ -494,6 +504,17 @@ var matrix = matrix || {};
       applyInOrder()
     })
 
+    // Undo deleted matrix
+    $('#undoDeletion').click(function () {
+      if (undoHistory.length > 0) {
+        $('#sortable').append(undoHistory.pop())
+
+        // Set event handlers back up
+        $('.scaleMatrixElem').on('focusout', scaleEventHandler)
+        $('.rotationAngle').on('focusout', rotationEventHandler)
+      }
+    })
+
     // Make the list of matrices sortable
     $('#sortable').sortable({
       items: '.item',
@@ -505,7 +526,8 @@ var matrix = matrix || {};
     $('#sortableDelete').sortable({
       items: '.item',
       receive: function (event, ui) {
-        // Delete the element
+        // Delete the element, storing it in undo history
+        undoHistory.push(ui.item)
         ui.item.remove()
       }
     })
