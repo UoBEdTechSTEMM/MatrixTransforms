@@ -63,7 +63,3 @@ Then you can run `standard` to lint your code and highlight any style errors.
 * Make more responsive with [media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries)
 
 * ~~Add the inverse matrix~~
-
-## Ideas
-
-* I don't know if the swap button is very useful
