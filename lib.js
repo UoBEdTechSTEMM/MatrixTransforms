@@ -364,6 +364,18 @@ var matrix = matrix || {};
           '\\)' +
         '</div>')
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
+      } else if (newMatrix === 'Reflect X') {
+        $('#sortable').append('<div class="item reflectXMatrix">' +
+          '\\(\\begin{pmatrix} 1 & 0 \\\\ 0 & -1 \\end{pmatrix} \\) </div>')
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
+      } else if (newMatrix === 'Reflect Y') {
+        $('#sortable').append('<div class="item reflectYMatrix">' +
+          '\\(\\begin{pmatrix} -1 & 0 \\\\ 0 & 1 \\end{pmatrix} \\) </div>')
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
+      } else if (newMatrix === 'Reflect origin') {
+        $('#sortable').append('<div class="item reflectOriginMatrix">' +
+          '\\(\\begin{pmatrix} -1 & 0 \\\\ 0 & -1 \\end{pmatrix} \\) </div>')
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
       } else if (newMatrix === 'Arbitrary') {
         $('#sortable').append('<div class="item arbitraryMatrix">' +
           '\\(' +
@@ -459,6 +471,12 @@ var matrix = matrix || {};
 
             matrix = matrix.multiplyLeft(new mt.Matrix(1, 0, Math.tan(angle), 1))
           }
+        } else if (child.hasClass('reflectXMatrix')) {
+          matrix = matrix.multiplyLeft(new mt.Matrix(1, 0, 0, -1))
+        } else if (child.hasClass('reflectYMatrix')) {
+          matrix = matrix.multiplyLeft(new mt.Matrix(-1, 0, 0, 1))
+        } else if (child.hasClass('reflectOriginMatrix')) {
+          matrix = matrix.multiplyLeft(new mt.Matrix(-1, 0, 0, -1))
         } else if (child.hasClass('arbitraryMatrix')) {
           value = [child.find('.matrixElemA')[0].value, child.find('.matrixElemB')[0].value,
               child.find('.matrixElemC')[0].value, child.find('.matrixElemD')[0].value]
