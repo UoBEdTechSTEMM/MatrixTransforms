@@ -28,7 +28,7 @@ Then you can run `standard` to lint your code and highlight any style errors.
   * ~~Display inverse matrix in LaTeX~~
   * ~~Display transformation matrix using [forminput](https://github.com/leathrum/mathjax-ext-contrib/tree/master/forminput)~~
   * Display full transformation equation (M * vertex = transformed)
-  * Display sequence of transformations in list in order of application
+  * ~~Display sequence of transformations in list in order of application~~
 
 
 * Sequencing of transformations in a list e.g. (M_1 * M_2 * M_3)
@@ -36,7 +36,7 @@ Then you can run `standard` to lint your code and highlight any style errors.
   * ~~Allow changing the order of application [(drag-and-drop?)](https://jqueryui.com/draggable/#sortableo)~~
   * ~~Allow deleting of matrices from list~~
   * ~~Allow clearing of transformation matrix~~
-  * Non-commuting matrices
+  * ~~Non-commuting matrices~~
 
 
 * ~~Have some preset matrices~~
