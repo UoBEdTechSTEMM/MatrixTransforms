@@ -340,6 +340,16 @@ var matrix = matrix || {};
         MathJax.Hub.Queue(function () {
           $('.rotationAngle').on('focusout', rotationEventHandler)
         })
+      } else if (newMatrix === 'Arbitrary') {
+        $('#sortable').append('<div class="item arbitraryMatrix">' +
+          '\\(' +
+          '\\begin{pmatrix}' +
+          '\\FormInput[][matrixInput matrixElemA][1]{} & \\FormInput[][matrixInput matrixElemB][0]{} \\\\' +
+          '\\FormInput[][matrixInput matrixElemC][0]{} & \\FormInput[][matrixInput matrixElemD][1]{}' +
+          '\\end{pmatrix}' +
+          '\\)' +
+        '</div>')
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
       }
     })
 
@@ -408,6 +418,13 @@ var matrix = matrix || {};
             var angle = Number(value) * (Math.PI / 180)
 
             matrix = matrix.multiplyLeft(new mt.Matrix(Math.cos(angle), -Math.sin(angle), Math.sin(angle), Math.cos(angle)))
+          }
+        } else if (child.hasClass('arbitraryMatrix')) {
+          value = [child.find('.matrixElemA')[0].value, child.find('.matrixElemB')[0].value,
+              child.find('.matrixElemC')[0].value, child.find('.matrixElemD')[0].value]
+
+          if (!value.some(isNaN)) {
+            matrix = matrix.multiplyLeft(new mt.Matrix(value[0], value[1], value[2], value[3]))
           }
         }
       }
