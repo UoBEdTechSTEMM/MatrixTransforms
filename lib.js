@@ -316,6 +316,7 @@ var matrix = matrix || {};
     $('#addMatrixToList').click(function () {
       var newMatrix = $('#matrixSelect option:selected').text()
 
+      // Depending on which matrix we have selected, add appropriate LaTeX to the page and render
       if (newMatrix === 'Scale') {
         $('#sortable').append('<div class="item scaleMatrix">' +
           '\\(' +
@@ -402,6 +403,7 @@ var matrix = matrix || {};
     // Makes sure that both diagonal elements of scale matrix are equal
     function scaleEventHandler () {
       if (!isNaN(this.value) && this.value !== '') {
+        // Replace LaTeX in div
         $(this).closest('div').text('\\(\\begin{pmatrix} ' +
           '\\FormInput[][matrixInputSmaller scaleMatrixElem][' + this.value + ']{} & 0 \\\\ 0 & ' +
           this.value + '\\end{pmatrix} \\)')
@@ -415,11 +417,12 @@ var matrix = matrix || {};
       }
     }
 
-    // Makes sure that both diagonal elements of scale matrix are equal
+    // Makes sure that all the angles in the matrix are equal
     function rotationEventHandler () {
       if (!isNaN(this.value) && this.value !== '') {
         var angle = this.value
 
+        // Replace LaTeX in div
         $(this).closest('div').text('\\(\\begin{pmatrix} ' +
           '\\cos{\\FormInput[][matrixInput rotationAngle][' + angle + ']{}} & -\\sin{' + angle + '}' +
           '\\\\ \\sin{' + angle + '} & ' + ' \\cos{' + angle + '} \\end{pmatrix} \\)')
@@ -444,6 +447,7 @@ var matrix = matrix || {};
       for (var i = children.length - 1; i >= 0; i--) {
         child = $(children[i])
 
+        // Depending on type of the matrix, get the value(s), build the appropriate matrix, and apply it
         if (child.hasClass('scaleMatrix')) {
           value = child.find('.scaleMatrixElem')[0].value
 
@@ -491,6 +495,7 @@ var matrix = matrix || {};
         }
       }
 
+      // Update transformation matrix and display
       updateTransformationMatrixDisplay()
       updateDisplay()
     }
@@ -518,7 +523,7 @@ var matrix = matrix || {};
     // Make the list of matrices sortable
     $('#sortable').sortable({
       items: '.item',
-      connectWith: '#sortableDelete'
+      connectWith: '#sortableDelete' // Allow us to drag items into the bin
     })
     $('#sortable').disableSelection()
 
@@ -526,7 +531,7 @@ var matrix = matrix || {};
     $('#sortableDelete').sortable({
       items: '.item',
       receive: function (event, ui) {
-        // Delete the element, storing it in undo history
+        // Delete the element, also storing it in undo history
         undoHistory.push(ui.item)
         ui.item.remove()
       }
