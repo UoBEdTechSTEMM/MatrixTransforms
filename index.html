@@ -25,33 +25,20 @@
       <option value="1" selected>Triangle</option>
       <option value="2">Square</option>
     </select>
+
+    <select id="matrixSelect">
+      <option value="1" selected>Scale</option>
+      <option value="2">Rotation</option>
+    </select>
+
+    <input type="button" id="addMatrixToList" value="Add">
   </p>
 
-  <div class="wrapper" id="sortable">
-    <div class="item">
-      <div id="scaleMatrix">
-        \(
-        \begin{pmatrix}
-        \FormInput[][matrixInputSmaller][1]{scaleMatrixElem} & 0 \\
-        0 & 1
-        \end{pmatrix}
-        \)
-      </div>
-      <br />
-      <input type="button" id="applyScaleMatrix" value="Apply">
+  <div class="wrapper">
+    <div class="wrapper" id="sortable">
     </div>
-    <div class="item">
-      <div id="rotationMatrix">
-        \(
-        \begin{pmatrix}
-        \cos{\FormInput[][matrixInput][30]{rotationAngle}} & -\sin{30} \\
-        \sin{30} & \cos{30}
-        \end{pmatrix}
-        \)
-      </div>
-      <br />
-      <input type="button" id="applyRotationMatrix" value="Apply">
-    </div>
+
+    <input type="button" id="applyInOrder" class="ui-state-disabled" value="Apply in order">
   </div>
 
   <p>Currently the transformation matrix applied to each vertex is

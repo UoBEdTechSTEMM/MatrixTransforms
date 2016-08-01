@@ -305,71 +305,116 @@ var matrix = matrix || {};
       updateDisplay()
     })
 
-    // Add event handler for apply scale matrix button
-    $('#applyScaleMatrix').click(function () {
-      // Multiply current matrix from left by scale matrix and update transformation matrix and display
-      if (!isNaN($('#scaleMatrixElem').val())) {
-        matrix = matrix.multiplyLeft(new mt.Matrix(Number($('#scaleMatrixElem').val()), 0, 0, Number($('#scaleMatrixElem').val())))
-        updateTransformationMatrixDisplay()
-        updateDisplay()
+    // Add event handler that adds a new matrix to the transformation list
+    $('#addMatrixToList').click(function () {
+      var newMatrix = $('#matrixSelect option:selected').text()
+      if (newMatrix === 'Scale') {
+        $('#sortable').append('<div class="item scaleMatrix">' +
+        '\\(' +
+          '\\begin{pmatrix}' +
+          '\\FormInput[][matrixInputSmaller scaleMatrixElem][1]{} & 0 \\\\' +
+          '0 & 1' +
+          '\\end{pmatrix}' +
+          '\\)' +
+        '</div>')
+
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
+
+        // Add event handler that ensures that both diagonal elements of the scale matrix are equal
+        MathJax.Hub.Queue(function () {
+          $('.scaleMatrixElem').on('focusout', scaleEventHandler)
+        })
+      } else if (newMatrix === 'Rotation') {
+        $('#sortable').append('<div class="item rotationMatrix">' +
+          '\\(' +
+          '\\begin{pmatrix}' +
+          '\\cos{\\FormInput[][matrixInput rotationAngle][30]{}} & -\\sin{30} \\\\' +
+          '\\sin{30} & \\cos{30}' +
+          '\\end{pmatrix}' +
+          '\\)' +
+        '</div>')
+
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
+
+        // Add event handler so that both diagonal elements of the scale matrix are equal
+        MathJax.Hub.Queue(function () {
+          $('.rotationAngle').on('focusout', rotationEventHandler)
+        })
       }
     })
 
     // Makes sure that both diagonal elements of scale matrix are equal
     function scaleEventHandler () {
-      if (!isNaN($('#scaleMatrixElem').val()) && $('#scaleMatrixElem').val() !== '') {
-        $('#scaleMatrix').text('\\(\\begin{pmatrix} ' +
-          '\\FormInput[][matrixInputSmaller][' + $('#scaleMatrixElem').val() + ']{scaleMatrixElem} & 0 \\\\ 0 & ' +
-          $('#scaleMatrixElem').val() + '\\end{pmatrix} \\)')
+      if (!isNaN(this.value) && this.value !== '') {
+        $(this).closest('div').text('\\(\\begin{pmatrix} ' +
+          '\\FormInput[][matrixInputSmaller scaleMatrixElem][' + this.value + ']{} & 0 \\\\ 0 & ' +
+          this.value + '\\end{pmatrix} \\)')
 
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
 
         // Re-register event handler after MathJax refresh
         MathJax.Hub.Queue(function () {
-          $('#scaleMatrixElem').on('input', scaleEventHandler)
+          $('.scaleMatrixElem').on('focusout', scaleEventHandler)
         })
       }
     }
 
-    // Add event handler so that both diagonal elements of the scale matrix are equal
-    $('#scaleMatrixElem').on('focusout', scaleEventHandler)
-
-    // Add event handler for apply rotation matrix button
-    $('#applyRotationMatrix').click(function () {
-      // Multiply current matrix from left by rotation matrix and update transformation matrix and display
-      if (!isNaN($('#rotationAngle').val())) {
-        var angle = Number($('#rotationAngle').val()) * (Math.PI / 180)
-
-        matrix = matrix.multiplyLeft(new mt.Matrix(Math.cos(angle), -Math.sin(angle), Math.sin(angle), Math.cos(angle)))
-        updateTransformationMatrixDisplay()
-        updateDisplay()
-      }
-    })
-
     // Makes sure that both diagonal elements of scale matrix are equal
     function rotationEventHandler () {
-      if (!isNaN($('#rotationAngle').val()) && $('#rotationAngle').val() !== '') {
-        var angle = $('#rotationAngle').val()
+      if (!isNaN(this.value) && this.value !== '') {
+        var angle = this.value
 
-        $('#rotationMatrix').text('\\(\\begin{pmatrix} ' +
-          '\\cos{\\FormInput[][matrixInput][' + angle + ']{rotationAngle}} & -\\sin{' + angle + '}' +
+        $(this).closest('div').text('\\(\\begin{pmatrix} ' +
+          '\\cos{\\FormInput[][matrixInput rotationAngle][' + angle + ']{}} & -\\sin{' + angle + '}' +
           '\\\\ \\sin{' + angle + '} & ' + ' \\cos{' + angle + '} \\end{pmatrix} \\)')
 
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
 
         // Re-register event handler after MathJax refresh
         MathJax.Hub.Queue(function () {
-          $('#rotationAngle').on('input', rotationEventHandler)
+          $('.rotationAngle').on('focusout', rotationEventHandler)
         })
       }
     }
 
-    // Add event handler so that both diagonal elements of the scale matrix are equal
-    $('#rotationAngle').on('focusout', rotationEventHandler)
-
     // Make the list of matrices sortable
-    $('#sortable').sortable()
+    $('#sortable').sortable({
+      items: '.item'
+    })
     $('#sortable').disableSelection()
+
+    // Apply matrices in order to tranformation matrix
+    $('#applyInOrder').click(function () {
+      var value
+      var child
+      var children = $('#sortable').children()
+
+      // Traverse div children in reverse
+      for (var i = children.length - 1; i >= 0; i--) {
+        child = $(children[i])
+
+        if (child.hasClass('scaleMatrix')) {
+          value = child.find('.scaleMatrixElem')[0].value
+
+          // Multiply current matrix from left by scale matrix and update transformation matrix and display
+          if (!isNaN(value)) {
+            matrix = matrix.multiplyLeft(new mt.Matrix(Number(value), 0, 0, Number(value)))
+          }
+        } else if (child.hasClass('rotationMatrix')) {
+          value = child.find('.rotationAngle')[0].value
+
+          // Multiply current matrix from left by rotation matrix and update transformation matrix and display
+          if (!isNaN(value)) {
+            var angle = Number(value) * (Math.PI / 180)
+
+            matrix = matrix.multiplyLeft(new mt.Matrix(Math.cos(angle), -Math.sin(angle), Math.sin(angle), Math.cos(angle)))
+          }
+        }
+      }
+
+      updateTransformationMatrixDisplay()
+      updateDisplay()
+    })
 
     // Draw initial display
     getNewMatrixValuesAndUpdate()

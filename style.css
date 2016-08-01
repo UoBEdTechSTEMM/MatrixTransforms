@@ -13,8 +13,10 @@ body {
 }
 
 .button, select {
-  font-size: 2em;
+  font-size: 1em;
   color: #555;
+  padding-left: 1em;
+  padding-right: 1em;
 }
 
 h1, h2, strong {
