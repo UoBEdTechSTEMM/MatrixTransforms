@@ -15,6 +15,10 @@ var matrix = matrix || {};
     this.d = d
   }
 
+  mt.IdentityMatrix = function () {
+    return new mt.Matrix(1, 0, 0, 1)
+  }
+
   mt.Matrix.prototype.getDeterminant = function () {
     return this.a * this.d - this.b * this.c
   }
@@ -393,8 +397,8 @@ var matrix = matrix || {};
     })
     $('#sortable').disableSelection()
 
-    // Apply matrices in order to tranformation matrix
-    $('#applyInOrder').click(function () {
+    // Apply matrices from list in order from right to left
+    function applyInOrder () {
       var value
       var child
       var children = $('#sortable').children()
@@ -431,6 +435,15 @@ var matrix = matrix || {};
 
       updateTransformationMatrixDisplay()
       updateDisplay()
+    }
+
+    // Apply matrices in order to tranformation matrix
+    $('#applyInOrder').click(applyInOrder)
+
+    // Apply but reset the transformation matrix first
+    $('#applyInOrderAndReset').click(function () {
+      matrix = mt.IdentityMatrix()
+      applyInOrder()
     })
 
     // Draw initial display
