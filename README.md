@@ -43,7 +43,7 @@ Then you can run `standard` to lint your code and highlight any style errors.
 
   * ~~Scale~~ (x and y separately)
   * ~~Rotate~~
-  * Skew (x, y)
+  * ~~Skew (x, y)~~
   * Reflect (x, y, origin)
 
 

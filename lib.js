@@ -344,6 +344,26 @@ var matrix = matrix || {};
         MathJax.Hub.Queue(function () {
           $('.rotationAngle').on('focusout', rotationEventHandler)
         })
+      } else if (newMatrix === 'Skew X') {
+        $('#sortable').append('<div class="item skewXMatrix">' +
+          '\\(' +
+          '\\begin{pmatrix}' +
+          '1 & \\tan{\\FormInput[][matrixInput skewXElem][30]{}} \\\\' +
+          '0 & 1' +
+          '\\end{pmatrix}' +
+          '\\)' +
+        '</div>')
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
+      } else if (newMatrix === 'Skew Y') {
+        $('#sortable').append('<div class="item skewYMatrix">' +
+          '\\(' +
+          '\\begin{pmatrix}' +
+          '1 & 0 \\\\' +
+          '\\tan{\\FormInput[][matrixInput skewYElem][30]{}} & 1' +
+          '\\end{pmatrix}' +
+          '\\)' +
+        '</div>')
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
       } else if (newMatrix === 'Arbitrary') {
         $('#sortable').append('<div class="item arbitraryMatrix">' +
           '\\(' +
@@ -400,6 +420,7 @@ var matrix = matrix || {};
     // Apply matrices from list in order from right to left
     function applyInOrder () {
       var value
+      var angle
       var child
       var children = $('#sortable').children()
 
@@ -410,18 +431,33 @@ var matrix = matrix || {};
         if (child.hasClass('scaleMatrix')) {
           value = child.find('.scaleMatrixElem')[0].value
 
-          // Multiply current matrix from left by scale matrix and update transformation matrix and display
+          // Multiply current matrix from left scale matrix
           if (!isNaN(value)) {
             matrix = matrix.multiplyLeft(new mt.Matrix(Number(value), 0, 0, Number(value)))
           }
         } else if (child.hasClass('rotationMatrix')) {
           value = child.find('.rotationAngle')[0].value
 
-          // Multiply current matrix from left by rotation matrix and update transformation matrix and display
           if (!isNaN(value)) {
-            var angle = Number(value) * (Math.PI / 180)
+            angle = Number(value) * (Math.PI / 180)
 
             matrix = matrix.multiplyLeft(new mt.Matrix(Math.cos(angle), -Math.sin(angle), Math.sin(angle), Math.cos(angle)))
+          }
+        } else if (child.hasClass('skewXMatrix')) {
+          value = child.find('.skewXElem')[0].value
+
+          if (!isNaN(value)) {
+            angle = Number(value) * (Math.PI / 180)
+
+            matrix = matrix.multiplyLeft(new mt.Matrix(1, Math.tan(angle), 0, 1))
+          }
+        } else if (child.hasClass('skewYMatrix')) {
+          value = child.find('.skewYElem')[0].value
+
+          if (!isNaN(value)) {
+            angle = Number(value) * (Math.PI / 180)
+
+            matrix = matrix.multiplyLeft(new mt.Matrix(1, 0, Math.tan(angle), 1))
           }
         } else if (child.hasClass('arbitraryMatrix')) {
           value = [child.find('.matrixElemA')[0].value, child.find('.matrixElemB')[0].value,
