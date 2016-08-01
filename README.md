@@ -34,7 +34,7 @@ Then you can run `standard` to lint your code and highlight any style errors.
 * Sequencing of transformations in a list e.g. (M_1 * M_2 * M_3)
 
   * ~~Allow changing the order of application [(drag-and-drop?)](https://jqueryui.com/draggable/#sortableo)~~
-  * Allow deleting of matrices from list
+  * ~~Allow deleting of matrices from list~~
   * ~~Allow clearing of transformation matrix~~
   * Non-commuting matrices
 

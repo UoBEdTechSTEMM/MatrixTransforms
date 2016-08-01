@@ -423,12 +423,6 @@ var matrix = matrix || {};
       }
     }
 
-    // Make the list of matrices sortable
-    $('#sortable').sortable({
-      items: '.item'
-    })
-    $('#sortable').disableSelection()
-
     // Apply matrices from list in order from right to left
     function applyInOrder () {
       var value
@@ -498,6 +492,22 @@ var matrix = matrix || {};
     $('#applyInOrderAndReset').click(function () {
       matrix = mt.IdentityMatrix()
       applyInOrder()
+    })
+
+    // Make the list of matrices sortable
+    $('#sortable').sortable({
+      items: '.item',
+      connectWith: '#sortableDelete'
+    })
+    $('#sortable').disableSelection()
+
+    // If we drop a matrix on the trash, destroy it
+    $('#sortableDelete').sortable({
+      items: '.item',
+      receive: function (event, ui) {
+        // Delete the element
+        ui.item.remove()
+      }
     })
 
     // Draw initial display
