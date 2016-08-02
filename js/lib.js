@@ -220,18 +220,18 @@ var matrix = matrix || {};
         vertices = [new mt.Point(0, 0), new mt.Point(1, 0), new mt.Point(1, 1), new mt.Point(0, 1)]
       }
 
-      // Scale the vertices and draw the shape
+      // Transform to screen coordinates and draw the untransformed shape
       scaledVertices = grid.scalePoints(vertices)
       mt.drawPath(two, scaledVertices, '#FF9E96', '#F45346')
 
       transformedVertices = []
 
-      // Apply transformation matrix to each vertex
+      // Apply transformation matrix to each vertex (in grid space)
       for (var i = 0; i < vertices.length; i++) {
         transformedVertices.push(vertices[i].applyMatrix(matrix))
       }
 
-      // Transform to screen coordinates and draw the triangle
+      // Transform to screen coordinates and draw the transformed shape
       scaledVertices = grid.scalePoints(transformedVertices)
       mt.drawPath(two, scaledVertices, '#DAF791', '#A1D916')
 
