@@ -488,7 +488,7 @@ var matrix = matrix || {};
         }
       }
 
-      return undefined
+      return null
     }
 
     // Apply matrices in order from right to left
