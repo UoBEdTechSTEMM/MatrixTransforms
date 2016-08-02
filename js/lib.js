@@ -175,6 +175,61 @@ var matrix = matrix || {};
     path.opacity = 0.5
   }
 
+  // Build matrix from jQuery object, returning a matrix or null if none exists
+  mt.getMatrixFromjQuery = function (object) {
+    var value
+    var angle
+
+    // Depending on type of the matrix, get the value(s), build the appropriate matrix, and apply it
+    if (object.hasClass('scaleMatrix')) {
+      value = object.find('.scaleMatrixElem')[0].value
+
+      // Return scale matrix
+      if (!isNaN(value)) {
+        return new mt.Matrix(Number(value), 0, 0, Number(value))
+      }
+    } else if (object.hasClass('rotationMatrix')) {
+      value = object.find('.rotationAngle')[0].value
+
+      if (!isNaN(value)) {
+        angle = Number(value) * (Math.PI / 180)
+
+        return new mt.Matrix(Math.cos(angle), -Math.sin(angle), Math.sin(angle), Math.cos(angle))
+      }
+    } else if (object.hasClass('skewXMatrix')) {
+      value = object.find('.skewXElem')[0].value
+
+      if (!isNaN(value)) {
+        angle = Number(value) * (Math.PI / 180)
+
+        return new mt.Matrix(1, Math.tan(angle), 0, 1)
+      }
+    } else if (object.hasClass('skewYMatrix')) {
+      value = object.find('.skewYElem')[0].value
+
+      if (!isNaN(value)) {
+        angle = Number(value) * (Math.PI / 180)
+
+        return new mt.Matrix(1, 0, Math.tan(angle), 1)
+      }
+    } else if (object.hasClass('reflectXMatrix')) {
+      return new mt.Matrix(1, 0, 0, -1)
+    } else if (object.hasClass('reflectYMatrix')) {
+      return new mt.Matrix(-1, 0, 0, 1)
+    } else if (object.hasClass('reflectOriginMatrix')) {
+      return new mt.Matrix(-1, 0, 0, -1)
+    } else if (object.hasClass('arbitraryMatrix')) {
+      value = [object.find('.matrixElemA')[0].value, object.find('.matrixElemB')[0].value,
+          object.find('.matrixElemC')[0].value, object.find('.matrixElemD')[0].value]
+
+      if (!value.some(isNaN)) {
+        return new mt.Matrix(value[0], value[1], value[2], value[3])
+      }
+    }
+
+    return null
+  }
+
   // The main application closure
   mt.runApp = function (canvasElem) {
     var two = new Two({ width: 600, height: 600 }).appendTo(canvasElem)
@@ -436,61 +491,6 @@ var matrix = matrix || {};
       }
     }
 
-    // Build matrix from jQuery object
-    function getMatrixFromjQuery (object) {
-      var value
-      var angle
-
-      // Depending on type of the matrix, get the value(s), build the appropriate matrix, and apply it
-      if (object.hasClass('scaleMatrix')) {
-        value = object.find('.scaleMatrixElem')[0].value
-
-        // Return scale matrix
-        if (!isNaN(value)) {
-          return new mt.Matrix(Number(value), 0, 0, Number(value))
-        }
-      } else if (object.hasClass('rotationMatrix')) {
-        value = object.find('.rotationAngle')[0].value
-
-        if (!isNaN(value)) {
-          angle = Number(value) * (Math.PI / 180)
-
-          return new mt.Matrix(Math.cos(angle), -Math.sin(angle), Math.sin(angle), Math.cos(angle))
-        }
-      } else if (object.hasClass('skewXMatrix')) {
-        value = object.find('.skewXElem')[0].value
-
-        if (!isNaN(value)) {
-          angle = Number(value) * (Math.PI / 180)
-
-          return new mt.Matrix(1, Math.tan(angle), 0, 1)
-        }
-      } else if (object.hasClass('skewYMatrix')) {
-        value = object.find('.skewYElem')[0].value
-
-        if (!isNaN(value)) {
-          angle = Number(value) * (Math.PI / 180)
-
-          return new mt.Matrix(1, 0, Math.tan(angle), 1)
-        }
-      } else if (object.hasClass('reflectXMatrix')) {
-        return new mt.Matrix(1, 0, 0, -1)
-      } else if (object.hasClass('reflectYMatrix')) {
-        return new mt.Matrix(-1, 0, 0, 1)
-      } else if (object.hasClass('reflectOriginMatrix')) {
-        return new mt.Matrix(-1, 0, 0, -1)
-      } else if (object.hasClass('arbitraryMatrix')) {
-        value = [object.find('.matrixElemA')[0].value, object.find('.matrixElemB')[0].value,
-            object.find('.matrixElemC')[0].value, object.find('.matrixElemD')[0].value]
-
-        if (!value.some(isNaN)) {
-          return new mt.Matrix(value[0], value[1], value[2], value[3])
-        }
-      }
-
-      return null
-    }
-
     // Apply matrices in order from right to left
     function applyInOrder () {
       var child
@@ -500,7 +500,7 @@ var matrix = matrix || {};
       for (var i = children.length - 1; i >= 0; i--) {
         child = $(children[i])
 
-        matrix = matrix.multiplyLeft(getMatrixFromjQuery(child))
+        matrix = matrix.multiplyLeft(mt.getMatrixFromjQuery(child))
       }
 
       // Update transformation matrix and display
@@ -531,7 +531,7 @@ var matrix = matrix || {};
     // Push inverse matrix onto end of list
     $('#pushInverse').click(function () {
       var end = $('#sortable').children().last()
-      var res = getMatrixFromjQuery(end).getInverse()
+      var res = mt.getMatrixFromjQuery(end).getInverse()
 
       if (res.exists === true) {
         $('#sortable').append('<div class="item arbitraryMatrix">' +
