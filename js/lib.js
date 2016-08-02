@@ -239,7 +239,7 @@ var matrix = matrix || {};
       res = matrix.getInverse()
 
       // If it exists, save it and display it, else set the inverse matrix to null
-      if (res.exists) {
+      if (res.exists === true) {
         inverseMatrix = res.matrix
 
         // Divide by 1 to remove trailing zeroes
@@ -436,10 +436,63 @@ var matrix = matrix || {};
       }
     }
 
-    // Apply matrices from list in order from right to left
-    function applyInOrder () {
+    // Build matrix from jQuery object
+    function getMatrixFromjQuery (object) {
       var value
       var angle
+
+      // Depending on type of the matrix, get the value(s), build the appropriate matrix, and apply it
+      if (object.hasClass('scaleMatrix')) {
+        value = object.find('.scaleMatrixElem')[0].value
+
+        // Return scale matrix
+        if (!isNaN(value)) {
+          return new mt.Matrix(Number(value), 0, 0, Number(value))
+        }
+      } else if (object.hasClass('rotationMatrix')) {
+        value = object.find('.rotationAngle')[0].value
+
+        if (!isNaN(value)) {
+          angle = Number(value) * (Math.PI / 180)
+
+          return new mt.Matrix(Math.cos(angle), -Math.sin(angle), Math.sin(angle), Math.cos(angle))
+        }
+      } else if (object.hasClass('skewXMatrix')) {
+        value = object.find('.skewXElem')[0].value
+
+        if (!isNaN(value)) {
+          angle = Number(value) * (Math.PI / 180)
+
+          return new mt.Matrix(1, Math.tan(angle), 0, 1)
+        }
+      } else if (object.hasClass('skewYMatrix')) {
+        value = object.find('.skewYElem')[0].value
+
+        if (!isNaN(value)) {
+          angle = Number(value) * (Math.PI / 180)
+
+          return new mt.Matrix(1, 0, Math.tan(angle), 1)
+        }
+      } else if (object.hasClass('reflectXMatrix')) {
+        return new mt.Matrix(1, 0, 0, -1)
+      } else if (object.hasClass('reflectYMatrix')) {
+        return new mt.Matrix(-1, 0, 0, 1)
+      } else if (object.hasClass('reflectOriginMatrix')) {
+        return new mt.Matrix(-1, 0, 0, -1)
+      } else if (object.hasClass('arbitraryMatrix')) {
+        value = [object.find('.matrixElemA')[0].value, object.find('.matrixElemB')[0].value,
+            object.find('.matrixElemC')[0].value, object.find('.matrixElemD')[0].value]
+
+        if (!value.some(isNaN)) {
+          return new mt.Matrix(value[0], value[1], value[2], value[3])
+        }
+      }
+
+      return undefined
+    }
+
+    // Apply matrices in order from right to left
+    function applyInOrder () {
       var child
       var children = $('#sortable').children()
 
@@ -447,52 +500,7 @@ var matrix = matrix || {};
       for (var i = children.length - 1; i >= 0; i--) {
         child = $(children[i])
 
-        // Depending on type of the matrix, get the value(s), build the appropriate matrix, and apply it
-        if (child.hasClass('scaleMatrix')) {
-          value = child.find('.scaleMatrixElem')[0].value
-
-          // Multiply current matrix from left scale matrix
-          if (!isNaN(value)) {
-            matrix = matrix.multiplyLeft(new mt.Matrix(Number(value), 0, 0, Number(value)))
-          }
-        } else if (child.hasClass('rotationMatrix')) {
-          value = child.find('.rotationAngle')[0].value
-
-          if (!isNaN(value)) {
-            angle = Number(value) * (Math.PI / 180)
-
-            matrix = matrix.multiplyLeft(new mt.Matrix(Math.cos(angle), -Math.sin(angle), Math.sin(angle), Math.cos(angle)))
-          }
-        } else if (child.hasClass('skewXMatrix')) {
-          value = child.find('.skewXElem')[0].value
-
-          if (!isNaN(value)) {
-            angle = Number(value) * (Math.PI / 180)
-
-            matrix = matrix.multiplyLeft(new mt.Matrix(1, Math.tan(angle), 0, 1))
-          }
-        } else if (child.hasClass('skewYMatrix')) {
-          value = child.find('.skewYElem')[0].value
-
-          if (!isNaN(value)) {
-            angle = Number(value) * (Math.PI / 180)
-
-            matrix = matrix.multiplyLeft(new mt.Matrix(1, 0, Math.tan(angle), 1))
-          }
-        } else if (child.hasClass('reflectXMatrix')) {
-          matrix = matrix.multiplyLeft(new mt.Matrix(1, 0, 0, -1))
-        } else if (child.hasClass('reflectYMatrix')) {
-          matrix = matrix.multiplyLeft(new mt.Matrix(-1, 0, 0, 1))
-        } else if (child.hasClass('reflectOriginMatrix')) {
-          matrix = matrix.multiplyLeft(new mt.Matrix(-1, 0, 0, -1))
-        } else if (child.hasClass('arbitraryMatrix')) {
-          value = [child.find('.matrixElemA')[0].value, child.find('.matrixElemB')[0].value,
-              child.find('.matrixElemC')[0].value, child.find('.matrixElemD')[0].value]
-
-          if (!value.some(isNaN)) {
-            matrix = matrix.multiplyLeft(new mt.Matrix(value[0], value[1], value[2], value[3]))
-          }
-        }
+        matrix = matrix.multiplyLeft(getMatrixFromjQuery(child))
       }
 
       // Update transformation matrix and display
@@ -517,6 +525,25 @@ var matrix = matrix || {};
         // Set event handlers back up
         $('.scaleMatrixElem').on('focusout', scaleEventHandler)
         $('.rotationAngle').on('focusout', rotationEventHandler)
+      }
+    })
+
+    // Push inverse matrix onto end of list
+    $('#pushInverse').click(function () {
+      var end = $('#sortable').children().last()
+      var res = getMatrixFromjQuery(end).getInverse()
+
+      if (res.exists === true) {
+        $('#sortable').append('<div class="item arbitraryMatrix">' +
+          '\\(' +
+          '\\begin{pmatrix}' +
+          '\\FormInput[][matrixInput matrixElemA][' + res.matrix.a + ']{} & \\FormInput[][matrixInput matrixElemB][' + res.matrix.b + ']{} \\\\' +
+          '\\FormInput[][matrixInput matrixElemC][' + res.matrix.c + ']{} & \\FormInput[][matrixInput matrixElemD][' + res.matrix.d + ']{}' +
+          '\\end{pmatrix}' +
+          '\\)' +
+        '</div>')
+
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
       }
     })
 

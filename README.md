@@ -37,10 +37,10 @@ Then you can run `standard` to lint your code and highlight any style errors.
   * ~~Allow deleting of matrices from list~~
   * ~~Allow clearing of transformation matrix~~
   * ~~Non-commuting matrices~~
-  * Button to push inverse of matrix onto list
+  * ~~Button to push inverse of matrix onto list~~
   * Text label for each matrix
   * ~~Undo button~~
-  
+
 
 * ~~Have some preset matrices~~
 
