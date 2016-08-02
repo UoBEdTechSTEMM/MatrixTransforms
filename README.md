@@ -38,7 +38,7 @@ Then you can run `standard` to lint your code and highlight any style errors.
   * ~~Allow clearing of transformation matrix~~
   * ~~Non-commuting matrices~~
   * ~~Button to push inverse of matrix onto list~~
-  * Text label for each matrix
+  * ~~Text label for each matrix~~
   * ~~Undo button~~
 
 

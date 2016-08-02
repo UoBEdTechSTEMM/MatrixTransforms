@@ -374,6 +374,7 @@ var matrix = matrix || {};
       // Depending on which matrix we have selected, add appropriate LaTeX to the page and render
       if (newMatrix === 'Scale') {
         $('#sortable').append('<div class="item scaleMatrix">' +
+          'Scale<br />' +
           '\\(' +
           '\\begin{pmatrix}' +
           '\\FormInput[][matrixInputSmaller scaleMatrixElem][1]{} & 0 \\\\' +
@@ -390,6 +391,7 @@ var matrix = matrix || {};
         })
       } else if (newMatrix === 'Rotation') {
         $('#sortable').append('<div class="item rotationMatrix">' +
+          'Rotation<br />' +
           '\\(' +
           '\\begin{pmatrix}' +
           '\\cos{\\FormInput[][matrixInput rotationAngle][30]{}} & -\\sin{30} \\\\' +
@@ -406,6 +408,7 @@ var matrix = matrix || {};
         })
       } else if (newMatrix === 'Skew X') {
         $('#sortable').append('<div class="item skewXMatrix">' +
+          'Skew X<br />' +
           '\\(' +
           '\\begin{pmatrix}' +
           '1 & \\tan{\\FormInput[][matrixInput skewXElem][30]{}} \\\\' +
@@ -417,6 +420,7 @@ var matrix = matrix || {};
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
       } else if (newMatrix === 'Skew Y') {
         $('#sortable').append('<div class="item skewYMatrix">' +
+          'Skew Y<br />' +
           '\\(' +
           '\\begin{pmatrix}' +
           '1 & 0 \\\\' +
@@ -428,21 +432,22 @@ var matrix = matrix || {};
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
       } else if (newMatrix === 'Reflect X') {
         $('#sortable').append('<div class="item reflectXMatrix">' +
-          '\\(\\begin{pmatrix} 1 & 0 \\\\ 0 & -1 \\end{pmatrix} \\) </div>')
+          'Reflect X <br />\\(\\begin{pmatrix} 1 & 0 \\\\ 0 & -1 \\end{pmatrix} \\) </div>')
 
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
       } else if (newMatrix === 'Reflect Y') {
         $('#sortable').append('<div class="item reflectYMatrix">' +
-          '\\(\\begin{pmatrix} -1 & 0 \\\\ 0 & 1 \\end{pmatrix} \\) </div>')
+          'Reflect Y <br />\\(\\begin{pmatrix} -1 & 0 \\\\ 0 & 1 \\end{pmatrix} \\) </div>')
 
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
       } else if (newMatrix === 'Reflect origin') {
         $('#sortable').append('<div class="item reflectOriginMatrix">' +
-          '\\(\\begin{pmatrix} -1 & 0 \\\\ 0 & -1 \\end{pmatrix} \\) </div>')
+          'Reflect Origin <br />\\(\\begin{pmatrix} -1 & 0 \\\\ 0 & -1 \\end{pmatrix} \\) </div>')
 
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'MatrixTransformations'])
       } else if (newMatrix === 'Arbitrary') {
         $('#sortable').append('<div class="item arbitraryMatrix">' +
+          'Arbitrary <br />' +
           '\\(' +
           '\\begin{pmatrix}' +
           '\\FormInput[][matrixInput matrixElemA][1]{} & \\FormInput[][matrixInput matrixElemB][0]{} \\\\' +
