@@ -21,6 +21,8 @@ Then you can run `standard` to lint your code and highlight any style errors.
 
 ## TODO
 
+* Move from rawgit to using github pages
+
 * Add ~~gridlines~~ and axis numbering
 
 * Display vertices and matrices
